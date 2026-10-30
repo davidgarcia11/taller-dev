@@ -27,9 +27,17 @@ user-invocable: false
 - Sin números ni cadenas mágicas: constantes con nombre.
 - Inmutabilidad por defecto. Sin estado global mutable.
 - Tipado estricto: sin `any`, `Object`, `interface{}` o equivalentes salvo en bordes justificados.
-- Comentarios solo para explicar por qué, nunca qué. Sin código comentado, `console.log`, `print` de depuración ni `TODO` sin issue.
+- Comentarios en el cuerpo del código solo para explicar por qué, nunca qué. Sin código comentado, `console.log`, `print` de depuración ni `TODO` sin issue.
 - Sin abstracciones especulativas: ni interfaces con una sola implementación, ni parámetros «por si acaso».
 - Sin dependencias nuevas fuera del plan.
+
+## Documentación
+
+- **API pública documentada.** Todo lo que otro módulo usa (funciones y clases exportadas, endpoints, componentes compartidos, comandos de CLI) lleva comentario de documentación en el formato del stack: TSDoc/JSDoc, docstrings con la convención del proyecto, Javadoc o comentarios de Go. Contenido: qué hace y para qué, parámetros y retorno cuando no son evidentes por el tipo, errores que lanza y un ejemplo si el uso no es obvio. Sin repetir lo que ya dice la firma.
+- **Código interno**: sin comentarios de documentación obligatorios; nombres claros.
+- **OpenAPI** (si el proyecto tiene API): los contratos salen del código y sus esquemas (descripciones, ejemplos y respuestas de error incluidos). Si cambia un contrato, regenera la referencia con `mise run api-docs` en el mismo commit.
+- **README y runbook**: si la tarea cambia comandos, configuración, variables de entorno o el despliegue, actualízalos en el mismo commit.
+- **CHANGELOG**: nunca a mano. Se genera de los commits, así que el mensaje del commit es la entrada del CHANGELOG: escríbelo para quien lo lea al publicar una versión.
 
 ## Errores y entradas
 

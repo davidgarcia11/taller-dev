@@ -37,6 +37,10 @@
 
 <!-- Quién puede hacer qué, validación de entradas, datos personales, secretos. -->
 
+## Documentación que cambia
+
+<!-- README, ARCHITECTURE.md, ADR, RUNBOOK.md, OpenAPI. "Ninguna" si no aplica. -->
+
 ## Pruebas
 
 | Criterio | Nivel | Prueba |

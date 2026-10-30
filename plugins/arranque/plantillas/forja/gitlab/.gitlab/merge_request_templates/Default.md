@@ -14,7 +14,7 @@
 
 - [ ] `mise run check` en verde
 - [ ] Cada criterio de aceptación tiene al menos un test
-- [ ] Documentación actualizada (README, docs/ARCHITECTURE.md o ADR) si cambia la estructura o el stack
+- [ ] Documentación actualizada: API pública comentada, OpenAPI, README, docs/ARCHITECTURE.md, ADR o runbook según aplique
 - [ ] Sin secretos, datos personales reales ni código de depuración
 - [ ] Revisión de calidad, estabilidad, robustez y seguridad sin hallazgos críticos ni altos pendientes
 

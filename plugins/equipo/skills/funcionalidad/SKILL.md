@@ -102,7 +102,8 @@ Máximo 3 rondas. Si sigue habiendo bloqueantes, para y presenta la situación a
 ## 7. Documentación y CLAUDE.md
 
 - `spec.md`: `Estado: Implementada`. Si el alcance cambió durante el desarrollo, la especificación refleja lo construido.
-- `docs/ARCHITECTURE.md`, ADR y README actualizados si cambian estructura, stack, comandos o configuración. Commit `docs: ...`.
+- Comprueba que está al día lo que el plan marcó en «Documentación que cambia»: `docs/ARCHITECTURE.md`, ADR, README, `docs/RUNBOOK.md` y la referencia OpenAPI (`mise run api-docs` sin diferencias). Lo que falte, commit `docs: ...`.
+- `CHANGELOG.md` no se toca: se genera de los commits al preparar una versión (`mise run version`).
 - `CLAUDE.md` (local, fuera de git): si surgió una regla, un término del dominio, un comando o un cambio de alcance duradero, enseña al usuario solo esas líneas y aplícalas con su aprobación.
 
 ## 8. PR

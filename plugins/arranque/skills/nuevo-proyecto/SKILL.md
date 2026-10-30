@@ -42,8 +42,9 @@ Preséntalo en el chat, sin relleno:
 5. **Calidad**: qué se testea y a qué nivel; qué ejecuta `mise run check`.
 6. **Seguridad y privacidad**: secretos, autenticación y autorización, datos personales, dependencias.
 7. **Operación**: entornos, despliegue, migraciones, copias de seguridad, logs y errores, secretos en producción.
-8. **Instalación**: lista exacta de lo que va a `mise.toml`, servicios locales (contenedores) y lo que, si algo, queda global.
-9. **Riesgos y decisiones abiertas.**
+8. **Documentación**: siempre README, arquitectura, ADR, especificaciones, comentarios de documentación en la API pública y CHANGELOG desde los commits. Si hay API: referencia OpenAPI generada desde el código. Si hay despliegue: runbook.
+9. **Instalación**: lista exacta de lo que va a `mise.toml`, servicios locales (contenedores) y lo que, si algo, queda global.
+10. **Riesgos y decisiones abiertas.**
 
 Pide aprobación explícita e itera hasta tenerla.
 
@@ -94,14 +95,7 @@ Si `jq '.attribution' ~/.claude/settings.json` no devuelve `commit: ""`, `pr: ""
 mkdir -p ~/.claude && f=~/.claude/settings.json && { [ -s "$f" ] || echo "{}" > "$f"; } && jq '.attribution = {commit: "", pr: "", sessionUrl: false}' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
 ```
 
-Con servicios locales: `command -v colima docker && docker compose version`. Si falta algo, pide permiso para:
-
-```bash
-brew install colima docker docker-compose
-mkdir -p ~/.docker && f=~/.docker/config.json && { [ -s "$f" ] || echo "{}" > "$f"; } && jq --arg d "$(brew --prefix)/lib/docker/cli-plugins" '.cliPluginsExtraDirs = ((.cliPluginsExtraDirs // []) + [$d] | unique)' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
-```
-
-Después `colima status || colima start`.
+Con servicios locales, sigue [servicios.md](servicios.md) para comprobar o instalar Colima.
 
 ### 2. Scaffold y runtimes
 
@@ -113,6 +107,7 @@ mise exec <tool>@<versión> -- <comando de scaffold>
 mise use --pin <tool>@<versión>      # una vez por herramienta del plan
 mise use --pin gitleaks@latest
 mise use --pin osv-scanner@latest    # si no está en el registro: aqua:google/osv-scanner@latest
+mise use --pin git-cliff@latest
 mise trust
 git init -b main                     # si el scaffold ya creó el repo: git branch -M main
 ```
@@ -122,16 +117,18 @@ Si el scaffold hizo su propio commit, borra `.git` y vuelve a `git init -b main`
 ### 3. Base del estándar
 
 ```bash
-"${CLAUDE_PLUGIN_ROOT}/bin/taller-base" --forja github   # o gitlab; añade --servicios si el plan los usa
+"${CLAUDE_PLUGIN_ROOT}/bin/taller-base" --forja github   # o gitlab; --servicios y --runbook si el plan los incluye
 ```
 
-Copia sin sobrescribir: hooks de git (secretos y formato de commits), CI, plantilla de PR/MR, `docs/` (arquitectura, ADR, especificaciones), `CLAUDE.md`, `.claude/` (permisos, hook que bloquea commits en `main`, skill `verify`), `.worktreeinclude` y, con `--servicios`, `compose.yaml`. Configura `core.hooksPath`, la exclusión local y el `.gitignore`. Lee su salida y resuelve lo que indique.
+Copia sin sobrescribir: hooks de git (secretos y formato de commits), `cliff.toml` para el CHANGELOG, CI, plantilla de PR/MR, `docs/` (arquitectura, ADR, especificaciones), `CLAUDE.md`, `.claude/` (permisos, hook que bloquea commits en `main`, skill `verify`), `.worktreeinclude`, con `--servicios` un `compose.yaml` y con `--runbook` un `docs/RUNBOOK.md`. Configura `core.hooksPath`, la exclusión local y el `.gitignore`. Lee su salida y resuelve lo que indique.
 
 ### 4. Rellenar con el plan aprobado
 
-- `mise.toml`: añade las tareas de `${CLAUDE_PLUGIN_ROOT}/plantillas/tareas/<stack>.toml` (y `servicios.toml` si hay contenedores) adaptadas al proyecto. `check` debe incluir lint, formato, tipos, tests, build, `gitleaks` y `osv-scanner`.
+- `mise.toml`: añade las tareas de `${CLAUDE_PLUGIN_ROOT}/plantillas/tareas/<stack>.toml` más `version.toml` (y `servicios.toml` si hay contenedores), adaptadas al proyecto. `check` debe incluir lint, formato, tipos, tests, build, `gitleaks` y `osv-scanner`.
 - Herramientas de lint, formato y test del stack como dependencias de desarrollo, con su configuración.
-- `CLAUDE.md`, `docs/ARCHITECTURE.md` y `docs/adr/0001-stack-y-arquitectura.md` con el plan aprobado. Borra las secciones que no apliquen.
+- Documentación de la API pública exigida por el linter cuando el stack lo permita sin ruido (por ejemplo, reglas `D` de ruff con convención Google, `revive` con `exported` en Go).
+- Con API: OpenAPI generado desde el código, nunca escrito a mano (FastAPI nativo, `@fastify/swagger` o `hono-openapi` con zod, springdoc-openapi, huma en Go), servido en desarrollo y exportado a `docs/api/openapi.json` con una tarea `mise run api-docs`; `check` falla si el exportado no coincide con el código.
+- `CLAUDE.md`, `docs/ARCHITECTURE.md`, `docs/adr/0001-stack-y-arquitectura.md` y, con despliegue, `docs/RUNBOOK.md` con el plan aprobado. Borra las secciones que no apliquen.
 - `README.md`: qué es, requisitos (mise; Colima si hay servicios), arranque (`mise trust && mise install && mise run setup`) y comandos.
 - `.env.example`: cada variable que necesite el proyecto, sin valores.
 - GitHub: `ECOSISTEMA` en `.github/dependabot.yml`. GitLab: `VERSION_MISE` en `.gitlab-ci.yml` (salida de `mise --version`).
@@ -142,7 +139,7 @@ No debe quedar ningún marcador:
 
 ```bash
 grep -rnE 'NOMBRE|VERSION_[A-Z]+|ECOSISTEMA|AAAA-MM-DD' --exclude-dir={.git,node_modules,.venv,target,.mise} .
-grep -n '<!--' CLAUDE.md docs/ARCHITECTURE.md docs/adr/0001-*.md
+grep -n '<!--' CLAUDE.md docs/ARCHITECTURE.md docs/adr/0001-*.md docs/RUNBOOK.md 2>/dev/null
 ```
 
 ### 5. Probar las protecciones

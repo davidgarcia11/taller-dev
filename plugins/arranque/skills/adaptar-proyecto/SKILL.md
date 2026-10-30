@@ -58,16 +58,19 @@ Pide aprobación explícita e itera hasta tenerla.
 Crea una lista de tareas con estos pasos.
 
 1. **Rama**: `git switch -c chore/adaptar-estandar`.
-2. **Runtimes**: `mise use --pin` con las versiones que el proyecto usa hoy, más `gitleaks` y `osv-scanner`. `mise trust`.
-3. **Base**: `"${CLAUDE_PLUGIN_ROOT}/bin/taller-base" --forja <github|gitlab>` (más `--servicios` si aplica). Integra a mano lo que el script omita por existir ya: conserva los jobs de CI existentes y añade `mise run check`.
+2. **Runtimes**: `mise use --pin` con las versiones que el proyecto usa hoy, más `gitleaks`, `osv-scanner` y `git-cliff`. `mise trust`.
+3. **Base**: `"${CLAUDE_PLUGIN_ROOT}/bin/taller-base" --forja <github|gitlab>` (más `--servicios` y `--runbook` si aplican). Integra a mano lo que el script omita por existir ya: conserva los jobs de CI existentes y añade `mise run check`.
 4. **Archivos del asistente fuera de git**: `git rm -r --cached --quiet` sobre los que el script avise. Siguen en disco.
-5. **Tareas de mise**: `setup` y `check` (desde `${CLAUDE_PLUGIN_ROOT}/plantillas/tareas/`) envolviendo los scripts existentes del proyecto.
+5. **Tareas de mise**: `setup`, `check`, `changelog` y `version` (desde `${CLAUDE_PLUGIN_ROOT}/plantillas/tareas/`) envolviendo los scripts existentes del proyecto.
 6. **Check en verde**: correcciones automáticas de formato y lint en un commit propio (`style: aplica formato automático`). Lo que no sea automático se resuelve según lo que decidió el usuario.
 7. **Documentación**:
    - `docs/ARCHITECTURE.md` describiendo el sistema tal como es hoy: lee el código (usa el agente Explore para mapearlo) y no inventes intenciones.
    - `docs/adr/0001-stack-y-arquitectura.md` registrando el stack existente como decisión aceptada.
    - `docs/specs/README.md` para las funcionalidades futuras.
    - README con requisitos, arranque y comandos.
+   - `CHANGELOG.md`: si el historial ya usa conventional commits, `mise run changelog`; si no, empieza desde esta PR con una entrada que resuma el estado actual.
+   - Si hay API sin referencia: propón OpenAPI generado desde el código como trabajo aparte, no en esta PR.
+   - Si hay despliegue: `docs/RUNBOOK.md` con lo que hoy se hace de verdad; marca como pendiente lo que no exista (por ejemplo, copias sin prueba de restauración).
 8. **CLAUDE.md** con la realidad del proyecto: vocabulario, reglas y comandos.
 9. **Equipo**: `claude plugin install equipo@taller-dev --scope local`.
 10. **Protecciones**: las dos pruebas de `nuevo-proyecto` (secreto y mensaje sin formato) deben fallar.

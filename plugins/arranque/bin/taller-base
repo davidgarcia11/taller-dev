@@ -2,7 +2,7 @@
 # Aplica la base del estándar a un repositorio git: plantillas, hooks, exclusiones y .gitignore.
 # Nunca sobrescribe archivos existentes: informa de los que omite.
 #
-# Uso: taller-base --forja github|gitlab [--servicios] [--dir RUTA]
+# Uso: taller-base --forja github|gitlab [--servicios] [--runbook] [--dir RUTA]
 set -euo pipefail
 
 raiz_plugin="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -10,10 +10,11 @@ plantillas="$raiz_plugin/plantillas"
 
 forja=""
 servicios=0
+runbook=0
 dir="."
 
 uso() {
-  echo "Uso: taller-base --forja github|gitlab [--servicios] [--dir RUTA]" >&2
+  echo "Uso: taller-base --forja github|gitlab [--servicios] [--runbook] [--dir RUTA]" >&2
   exit 64
 }
 
@@ -21,6 +22,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --forja) forja="${2:-}"; shift 2 ;;
     --servicios) servicios=1; shift ;;
+    --runbook) runbook=1; shift ;;
     --dir) dir="${2:-}"; shift 2 ;;
     -h|--help) uso ;;
     *) echo "Opción desconocida: $1" >&2; uso ;;
@@ -62,6 +64,7 @@ copiar_arbol "$plantillas/forja/$forja"
 copiar_arbol "$plantillas/docs"
 copiar_arbol "$plantillas/local"
 [ "$servicios" -eq 1 ] && copiar_arbol "$plantillas/servicios"
+[ "$runbook" -eq 1 ] && copiar_arbol "$plantillas/opcional/runbook"
 
 chmod +x .githooks/* .claude/hooks/*.sh 2>/dev/null || true
 git config core.hooksPath .githooks

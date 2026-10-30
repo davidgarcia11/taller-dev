@@ -74,6 +74,6 @@ mise run check
 git push -u origin fix/nombre-corto
 ```
 
-Cuerpo con la plantilla del proyecto: síntoma, causa raíz, corrección, test de regresión, cómo probarlo y pendientes. Título `fix(ámbito): descripción`. Si hay datos dañados que reparar, indícalo como paso aparte.
+Cuerpo con la plantilla del proyecto: síntoma, causa raíz, corrección, test de regresión, cómo probarlo y pendientes. Título `fix(ámbito): descripción`. Si hay datos dañados que reparar, indícalo como paso aparte. Si el bug fue grave en producción, propón al usuario un informe en `docs/incidencias/AAAA-MM-DD-titulo.md` (cronología, causa raíz, impacto y acciones).
 
 Cierra con: URL de la PR, causa raíz en una frase y «El merge es tuyo cuando revises el diff».

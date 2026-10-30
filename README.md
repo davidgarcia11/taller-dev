@@ -6,13 +6,13 @@
 
 Dos plugins de Claude Code: uno arranca o adapta proyectos con el estándar, el otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión.
 
-![Versión](https://img.shields.io/badge/versión-1.0.0-2563eb?style=flat-square)
+![Versión](https://img.shields.io/badge/versión-1.1.0-2563eb?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude_Code-plugins-d97757?style=flat-square)
 ![Metodología](https://img.shields.io/badge/SDD_·_TDD-especificación_primero-16a34a?style=flat-square)
 ![Forjas](https://img.shields.io/badge/GitHub_·_GitLab-soportados-6b7280?style=flat-square)
 ![Uso](https://img.shields.io/badge/uso-privado-111827?style=flat-square)
 
-[Qué incluye](#-qué-incluye) · [Cómo funciona](#-cómo-funciona) · [Instalación](#-instalación) · [Uso](#-uso) · [El equipo](#-el-equipo) · [Protecciones](#-protecciones) · [Mantenimiento](#-mantenimiento)
+[Qué incluye](#-qué-incluye) · [Cómo funciona](#-cómo-funciona) · [Instalación](#-instalación) · [Uso](#-uso) · [El equipo](#-el-equipo) · [Documentación](#-documentación) · [Protecciones](#-protecciones) · [Mantenimiento](#-mantenimiento)
 
 </div>
 
@@ -131,7 +131,7 @@ O directamente `/arranque:nuevo-proyecto`. Te preguntará lo necesario, te ense�
 - Herramientas fijadas por proyecto en `mise.toml`. Nada global.
 - Hooks de git: secretos bloqueados, conventional commits obligatorios y autoría limpia.
 - CI en GitHub Actions o GitLab CI que ejecuta exactamente `mise run check`.
-- Plantilla de PR/MR, Dependabot (GitHub), `docs/` con arquitectura, ADR y especificaciones.
+- Plantilla de PR/MR, Dependabot (GitHub), `docs/` con arquitectura, ADR y especificaciones, y CHANGELOG generado desde los commits.
 - Servicios locales con Colima y `compose.yaml` si el proyecto los necesita.
 - `CLAUDE.md`, permisos, hooks y el equipo activados solo en local.
 
@@ -181,6 +181,24 @@ Cada agente carga al empezar su skill de conocimiento (`diseno-tecnico`, `codigo
 | 🟡 **Medio** | Se corrige salvo que decidas aplazarlo. |
 | ⚪ **Bajo** | Se anota en la PR como pendiente. |
 
+## 📚 Documentación
+
+Cada proyecto se documenta mientras se programa, no al final. El plan de cada funcionalidad dice qué documentos cambian y cada tarea los actualiza en su propio commit; el revisor lo comprueba.
+
+| Documento | Qué recoge | Cuándo se actualiza |
+|---|---|---|
+| `README.md` | Qué es, requisitos, arranque y comandos | Al cambiar comandos o configuración |
+| `docs/ARCHITECTURE.md` | Visión, principios, stack, estructura, operación y mapa de la documentación | Al cambiar estructura o stack |
+| `docs/adr/` | Decisiones con sus alternativas | En cada decisión relevante |
+| `docs/specs/NNN/` | Especificación, plan y tareas | En cada funcionalidad |
+| Comentarios en el código | API pública: qué hace, parámetros, errores y ejemplos | En el mismo commit que la cambia |
+| `docs/api/openapi.json` | Referencia de la API, generada desde el código | Al cambiar un contrato; el check falla si no coincide |
+| `docs/RUNBOOK.md` | Despliegue, vuelta atrás, copias, secretos, alertas e incidencias | Al cambiar la operación |
+| `CHANGELOG.md` | Cambios por versión, en castellano | Se genera de los commits con `mise run version` |
+| PR | Qué, por qué, cómo probarlo y resultado de las auditorías | En cada cambio |
+
+La referencia OpenAPI solo existe en proyectos con API, y el runbook en proyectos con despliegue. Para bugs graves en producción, el flujo propone un informe de incidencia en `docs/incidencias/`.
+
 ## 🔒 Protecciones
 
 Las instrucciones guían; estas protecciones obligan, aunque alguien se las salte.
@@ -207,6 +225,7 @@ mi-proyecto/
 │   ├── adr/                  decisiones                       │
 │   └── specs/                una carpeta por funcionalidad    │
 ├── compose.yaml              servicios locales (si los hay)   │
+├── cliff.toml · CHANGELOG.md  cambios por versión             │
 ├── mise.toml                 herramientas y tareas            ┘
 │
 ├── CLAUDE.md                 reglas para el asistente         ┐
@@ -254,7 +273,7 @@ taller-dev/
 ├── plugins/
 │   ├── arranque/
 │   │   ├── bin/taller-base             Aplica la base sin sobrescribir nada
-│   │   ├── plantillas/                 Hooks, CI, docs, CLAUDE.md, settings, compose y tareas por stack
+│   │   ├── plantillas/                 Hooks, CI, docs, runbook, CHANGELOG, CLAUDE.md, settings, compose y tareas
 │   │   └── skills/                     nuevo-proyecto · adaptar-proyecto
 │   └── equipo/
 │       ├── agents/                     arquitecto · desarrollador · revisor · qa · cazabugs · seguridad

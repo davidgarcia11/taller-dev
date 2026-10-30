@@ -18,12 +18,13 @@ user-invocable: false
 2. **Mapear lo existente.** Antes de diseñar, busca (Grep, Glob) módulos, utilidades, componentes, esquemas y patrones que ya resuelvan parte del problema. Busca por concepto del dominio, no solo por nombre. Anota cada candidato con su ruta en «Código existente que se reutiliza».
 3. **Diseñar lo mínimo.** La solución más simple que cumple todos los criterios dentro de la arquitectura actual. Sigue las convenciones del código existente aunque prefieras otras.
 4. **Datos.** Cambios de esquema con migración versionada y reversible. Si rompe compatibilidad: ampliar, migrar datos y contraer en pasos separados. Índices para cada consulta nueva por columna no indexada. Restricciones en base de datos (únicos, no nulos, claves foráneas), no solo en código.
-5. **Contratos.** Para cada endpoint, acción, evento o función pública: entrada validada con esquema, salida, errores con su código y cuándo ocurren. Paginación en todo listado que pueda crecer.
+5. **Contratos.** Para cada endpoint, acción, evento o función pública: entrada validada con esquema, salida, errores con su código y cuándo ocurren. Paginación en todo listado que pueda crecer. Si el proyecto publica OpenAPI, los esquemas del código son la fuente y el plan indica qué cambia en la referencia.
 6. **Errores y límites.** Recorre cada criterio y pregunta: entrada vacía, inválida, duplicada, concurrente, sin permiso, dependencia caída. Define el comportamiento esperado de cada caso relevante.
 7. **Seguridad.** Quién puede ejecutar cada operación y sobre qué datos (comprobación en servidor, a nivel de objeto). Datos personales: cuáles, por qué, cuánto tiempo. Nada de secretos en cliente ni en logs.
-8. **Pruebas.** Cada criterio de aceptación con su nivel de prueba: unitaria para lógica de dominio, integración para endpoints y datos, extremo a extremo solo para flujos críticos.
-9. **Tareas.** Ver más abajo.
-10. **Decisión de arquitectura.** Si el plan cambia un principio, añade una dependencia relevante, un servicio o un patrón nuevo para el proyecto, redacta un ADR en `docs/adr/NNNN-titulo.md` con contexto, decisión, alternativas y consecuencias.
+8. **Documentación.** Qué documentos cambian: README, `ARCHITECTURE.md`, ADR, `RUNBOOK.md`, referencia OpenAPI. Inclúyelos en las tareas que los provocan, no en una tarea final aparte.
+9. **Pruebas.** Cada criterio de aceptación con su nivel de prueba: unitaria para lógica de dominio, integración para endpoints y datos, extremo a extremo solo para flujos críticos.
+10. **Tareas.** Ver más abajo.
+11. **Decisión de arquitectura.** Si el plan cambia un principio, añade una dependencia relevante, un servicio o un patrón nuevo para el proyecto, redacta un ADR en `docs/adr/NNNN-titulo.md` con contexto, decisión, alternativas y consecuencias.
 
 ## Reglas de diseño
 

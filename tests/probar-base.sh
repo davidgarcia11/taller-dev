@@ -24,10 +24,10 @@ git config user.email prueba@example.com
 git config user.name Prueba
 
 echo "taller-base"
-"$raiz/plugins/arranque/bin/taller-base" --forja github --servicios > "$tmp/salida.txt"
+"$raiz/plugins/arranque/bin/taller-base" --forja github --servicios --runbook > "$tmp/salida.txt"
 comprueba "crea los hooks de git" "[ -x .githooks/pre-commit ] && [ -x .githooks/commit-msg ]"
 comprueba "configura core.hooksPath" "[ \"\$(git config core.hooksPath)\" = .githooks ]"
-comprueba "crea CI, docs y compose" "[ -f .github/workflows/ci.yml ] && [ -f docs/ARCHITECTURE.md ] && [ -f compose.yaml ]"
+comprueba "crea CI, docs, compose, runbook y cliff.toml" "[ -f .github/workflows/ci.yml ] && [ -f docs/ARCHITECTURE.md ] && [ -f compose.yaml ] && [ -f docs/RUNBOOK.md ] && [ -f cliff.toml ]"
 comprueba "excluye los archivos del asistente" "git check-ignore -q CLAUDE.md && git check-ignore -q .claude/settings.json && git check-ignore -q .worktreeinclude"
 comprueba "no muestra archivos del asistente en git status" "! git status --porcelain | grep -qiE 'claude|worktreeinclude'"
 "$raiz/plugins/arranque/bin/taller-base" --forja github > "$tmp/salida2.txt"

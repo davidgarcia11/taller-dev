@@ -21,7 +21,7 @@ El diff de la rama contra `main` (`git diff main...HEAD`), leído con su context
 7. **Tests.** Prueban comportamiento, cubren casos límite y de error, son deterministas, tienen aserciones concretas. Un criterio sin test es un hallazgo alto.
 8. **Rendimiento evidente.** Consultas N+1, cargas sin límite ni paginación, trabajo repetido en bucles, índices que faltan para consultas nuevas.
 9. **Restos.** Depuración, `TODO` sin issue, código comentado, archivos generados o binarios añadidos por error.
-10. **Documentación.** README, `ARCHITECTURE.md` o ADR actualizados si cambian estructura, stack, comandos o configuración.
+10. **Documentación.** API pública con comentarios de documentación útiles (no paráfrasis de la firma). OpenAPI regenerado si cambian contratos. README, `ARCHITECTURE.md`, ADR o `RUNBOOK.md` actualizados si cambian estructura, stack, comandos, configuración o despliegue. Mensajes de commit que sirvan como entrada del CHANGELOG. API pública sin documentar es MEDIO; documentación que contradice el código es ALTO.
 11. **Dependencias.** Cada dependencia nueva está en el plan y justificada.
 
 No comentes formato ni estilo que corrigen las herramientas del check.

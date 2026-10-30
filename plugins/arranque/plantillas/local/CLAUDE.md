@@ -26,12 +26,15 @@
 - Valida entradas en los bordes con <!-- zod/pydantic/... -->.
 - <!-- Reglas del dominio: "nunca hagas X" -->
 - Si cambia la estructura o el stack, actualiza `docs/ARCHITECTURE.md` o añade un ADR en la misma PR.
+- API pública con comentarios de documentación; OpenAPI generado desde el código si hay API; README y runbook al día en el mismo commit que los cambia.
+- `CHANGELOG.md` nunca a mano: sale de los commits.
 - Autoría: commits, PR, código, comentarios y docs nunca mencionan a Claude, IA ni herramientas de asistencia. Sin `Co-Authored-By`, enlaces de sesión ni «Generated with».
 
 ## Comandos
 
 - `mise run setup`: tras clonar
 - `mise run check`: lint, formato, tipos, tests, build, secretos y dependencias (igual que CI)
+- `mise run changelog`: regenera el CHANGELOG · `mise run version`: prepara una versión
 - <!-- arranque en desarrollo -->
 - <!-- servicios locales: mise run db / mise run db:reset -->
 

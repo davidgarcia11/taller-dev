@@ -78,3 +78,15 @@ src/
 ## 10. Decisiones
 
 Registro en [`docs/adr/`](adr/). Cada decisión relevante tiene su ADR.
+
+## 11. Mapa de la documentación
+
+| Documento | Contenido |
+|---|---|
+| [`README.md`](../README.md) | Qué es, requisitos, arranque y comandos |
+| Este documento | Visión, principios, stack, estructura y operación |
+| [`docs/adr/`](adr/) | Decisiones y sus alternativas |
+| [`docs/specs/`](specs/) | Una especificación, plan y tareas por funcionalidad |
+| [`CHANGELOG.md`](../CHANGELOG.md) | Cambios por versión, generado desde los commits |
+| <!-- `docs/api/openapi.json` --> | <!-- Referencia de la API, generada desde el código --> |
+| <!-- `docs/RUNBOOK.md` --> | <!-- Despliegue, copias, incidencias y tareas periódicas --> |

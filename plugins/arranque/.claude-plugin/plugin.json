@@ -1,0 +1,10 @@
+{
+  "name": "arranque",
+  "version": "1.0.0",
+  "description": "Crea proyectos nuevos o adapta los existentes al estándar: plan aprobado, herramientas por proyecto, git, CI y protecciones.",
+  "author": {
+    "name": "David Garcia"
+  },
+  "repository": "https://github.com/davidgarcia11/taller-dev",
+  "keywords": ["scaffold", "proyecto", "git", "ci", "mise", "sdd"]
+}

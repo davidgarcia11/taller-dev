@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# Aplica la base del estándar a un repositorio git: plantillas, hooks, exclusiones y .gitignore.
+# Nunca sobrescribe archivos existentes: informa de los que omite.
+#
+# Uso: taller-base --forja github|gitlab [--servicios] [--dir RUTA]
+set -euo pipefail
+
+raiz_plugin="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+plantillas="$raiz_plugin/plantillas"
+
+forja=""
+servicios=0
+dir="."
+
+uso() {
+  echo "Uso: taller-base --forja github|gitlab [--servicios] [--dir RUTA]" >&2
+  exit 64
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --forja) forja="${2:-}"; shift 2 ;;
+    --servicios) servicios=1; shift ;;
+    --dir) dir="${2:-}"; shift 2 ;;
+    -h|--help) uso ;;
+    *) echo "Opción desconocida: $1" >&2; uso ;;
+  esac
+done
+
+case "$forja" in
+  github|gitlab) ;;
+  *) echo "Falta --forja github|gitlab" >&2; uso ;;
+esac
+
+cd "$dir"
+if [ "$(git rev-parse --show-toplevel 2>/dev/null)" != "$(pwd -P)" ]; then
+  echo "Ejecuta taller-base en la raíz de un repositorio git (git init primero)." >&2
+  exit 1
+fi
+
+creados=()
+omitidos=()
+
+copiar_arbol() {
+  local origen="$1" rel destino
+  [ -d "$origen" ] || return 0
+  while IFS= read -r -d '' archivo; do
+    rel="${archivo#"$origen"/}"
+    destino="./$rel"
+    if [ -e "$destino" ]; then
+      omitidos+=("$rel")
+    else
+      mkdir -p "$(dirname "$destino")"
+      cp -p "$archivo" "$destino"
+      creados+=("$rel")
+    fi
+  done < <(find "$origen" -type f -print0 | sort -z)
+}
+
+copiar_arbol "$plantillas/comun"
+copiar_arbol "$plantillas/forja/$forja"
+copiar_arbol "$plantillas/docs"
+copiar_arbol "$plantillas/local"
+[ "$servicios" -eq 1 ] && copiar_arbol "$plantillas/servicios"
+
+chmod +x .githooks/* .claude/hooks/*.sh 2>/dev/null || true
+git config core.hooksPath .githooks
+
+anadir_lineas() {
+  local archivo="$1"; shift
+  mkdir -p "$(dirname "$archivo")"
+  touch "$archivo"
+  local linea
+  for linea in "$@"; do
+    grep -qxF -- "$linea" "$archivo" || printf '%s\n' "$linea" >> "$archivo"
+  done
+}
+
+# Solo local: configuración del asistente y archivos para asistentes generados por scaffolds.
+exclude="$(git rev-parse --git-path info/exclude)"
+anadir_lineas "$exclude" CLAUDE.md CLAUDE.local.md .claude/ .worktreeinclude AGENTS.md
+
+anadir_lineas .gitignore ".env*" "!.env.example" ".mise/" "mise.local.toml" ".DS_Store"
+
+echo "Base aplicada (forja: $forja)."
+if [ "${#creados[@]}" -gt 0 ]; then
+  echo "Creados:"
+  printf '  %s\n' "${creados[@]}"
+fi
+if [ "${#omitidos[@]}" -gt 0 ]; then
+  echo "Omitidos porque ya existían (revísalos a mano):"
+  printf '  %s\n' "${omitidos[@]}"
+fi
+
+rastreados=$(git ls-files -- CLAUDE.md CLAUDE.local.md .claude AGENTS.md .worktreeinclude 2>/dev/null || true)
+if [ -n "$rastreados" ]; then
+  echo "Aviso: estos archivos ya están en git y deberían salir del repositorio (git rm --cached):"
+  printf '%s\n' "$rastreados" | sed 's/^/  /'
+fi
+
+echo "Pendiente de rellenar: los textos en MAYÚSCULAS y los comentarios <!-- --> de las plantillas."

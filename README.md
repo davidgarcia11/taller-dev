@@ -1,0 +1,282 @@
+<div align="center">
+
+# 🛠️ Taller Dev
+
+**Proyectos profesionales desde el primer commit y un equipo de desarrollo completo en cada funcionalidad.**
+
+Dos plugins de Claude Code: uno arranca o adapta proyectos con el estándar, el otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión.
+
+![Versión](https://img.shields.io/badge/versión-1.0.0-2563eb?style=flat-square)
+![Claude Code](https://img.shields.io/badge/Claude_Code-plugins-d97757?style=flat-square)
+![Metodología](https://img.shields.io/badge/SDD_·_TDD-especificación_primero-16a34a?style=flat-square)
+![Forjas](https://img.shields.io/badge/GitHub_·_GitLab-soportados-6b7280?style=flat-square)
+![Uso](https://img.shields.io/badge/uso-privado-111827?style=flat-square)
+
+[Qué incluye](#-qué-incluye) · [Cómo funciona](#-cómo-funciona) · [Instalación](#-instalación) · [Uso](#-uso) · [El equipo](#-el-equipo) · [Protecciones](#-protecciones) · [Mantenimiento](#-mantenimiento)
+
+</div>
+
+---
+
+## ✨ Qué incluye
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 🚀 `arranque`
+
+Activo en todo el Mac. Prepara proyectos.
+
+- **`/arranque:nuevo-proyecto`**: descubrimiento, plan de stack y arquitectura que apruebas tú, y proyecto creado con todo en su sitio.
+- **`/arranque:adaptar-proyecto`**: diagnóstico de un proyecto existente y PR que lo lleva al estándar sin romper nada.
+
+</td>
+<td width="50%" valign="top">
+
+### 👥 `equipo`
+
+Activo solo en tus proyectos. Hace el trabajo.
+
+- **`/equipo:funcionalidad`**: especificación, plan, desarrollo con tests y cuatro auditorías antes de abrir la PR.
+- **`/equipo:arreglo`**: causa raíz, test que reproduce el bug, corrección mínima y auditorías proporcionales.
+
+</td>
+</tr>
+</table>
+
+No hace falta escribir los comandos: el `CLAUDE.md` de cada proyecto indica que toda funcionalidad o bug pasa por su flujo, así que basta con pedirlo con tus palabras.
+
+## 🔄 Cómo funciona
+
+Cada funcionalidad sigue el mismo camino. Tú decides en tres puntos; el resto es automático.
+
+```mermaid
+flowchart TD
+    A([💬 Pides una funcionalidad]) --> B[📝 Especificación<br/><sub>problema, historias y criterios de aceptación</sub>]
+    B --> C{✅ Apruebas}
+    C -->|cambios| B
+    C -->|sí| D[📐 Plan técnico<br/><sub>arquitecto · Opus</sub>]
+    D --> E{✅ Apruebas}
+    E -->|cambios| D
+    E -->|sí| F[⌨️ Desarrollo con tests primero<br/><sub>desarrollador · Sonnet · un commit por tarea</sub>]
+    F --> G
+
+    subgraph G [🔍 Auditorías en paralelo]
+        direction LR
+        G1[Revisor<br/><sub>Opus</sub>]
+        G2[QA<br/><sub>Sonnet</sub>]
+        G3[Cazabugs<br/><sub>Opus</sub>]
+        G4[Seguridad<br/><sub>Opus</sub>]
+    end
+
+    G --> H{¿Hallazgos<br/>bloqueantes?}
+    H -->|sí, máx. 3 rondas| I[🔧 Correcciones con test]
+    I --> G
+    H -->|no| J[📚 Documentación y CLAUDE.md]
+    J --> K[📬 PR abierta]
+    K --> L([✅ Revisas y haces merge])
+
+    classDef tu fill:#dcfce7,stroke:#16a34a,color:#14532d
+    classDef final fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    class C,E,L tu
+    class K final
+```
+
+Para cambios pequeños hay un **modo ligero**: especificación breve, una sola aprobación y solo control de calidad (más seguridad si toca entradas o datos). El flujo lo propone y tú lo confirmas.
+
+### Especificación primero (SDD)
+
+Cada funcionalidad deja su rastro en el repositorio, como documentación normal del proyecto:
+
+```text
+docs/specs/007-firma-de-partes/
+├── spec.md    Qué y por qué: historias de usuario y criterios de aceptación verificables
+├── plan.md    Cómo: código que se reutiliza, datos, contratos, errores, seguridad y pruebas
+└── tasks.md   Tareas ordenadas; cada una es un commit con su test
+```
+
+Los principios del proyecto viven en `docs/ARCHITECTURE.md` y toda especificación y plan se contrastan con ellos.
+
+## 📦 Instalación
+
+Requisitos: macOS con [Homebrew](https://brew.sh), `git`, [`mise`](https://mise.jdx.dev), `jq`, `gh` o `glab` autenticado y Claude Code 2.1.295 o posterior.
+
+```bash
+# 1. Registra el catálogo (una vez por Mac; usa tu sesión de gh)
+claude plugin marketplace add davidgarcia11/taller-dev
+
+# 2. Instala arranque en todo el Mac
+claude plugin install arranque@taller-dev
+
+# 3. Comprueba
+claude plugin list
+```
+
+El plugin `equipo` no se instala a mano: `nuevo-proyecto` y `adaptar-proyecto` lo activan en cada proyecto con `--scope local`, que queda en `.claude/settings.local.json` y nunca se sube a git.
+
+> [!TIP]
+> Si ya tenías la skill `nuevo-proyecto` guardada en claude.ai, desactívala allí para que no haya dos versiones. Bórrala cuando hayas creado un par de proyectos con el plugin sin problemas.
+
+## 🧭 Uso
+
+### Crear un proyecto
+
+```text
+Quiero crear una app para gestionar los partes de obra desde el móvil
+```
+
+O directamente `/arranque:nuevo-proyecto`. Te preguntará lo necesario, te enseñará el plan y, cuando lo apruebes, creará el proyecto, el repositorio privado y lo dejará listo con:
+
+- Herramientas fijadas por proyecto en `mise.toml`. Nada global.
+- Hooks de git: secretos bloqueados, conventional commits obligatorios y autoría limpia.
+- CI en GitHub Actions o GitLab CI que ejecuta exactamente `mise run check`.
+- Plantilla de PR/MR, Dependabot (GitHub), `docs/` con arquitectura, ADR y especificaciones.
+- Servicios locales con Colima y `compose.yaml` si el proyecto los necesita.
+- `CLAUDE.md`, permisos, hooks y el equipo activados solo en local.
+
+### Adaptar un proyecto existente
+
+```text
+/arranque:adaptar-proyecto ~/Projects/erp-encofrados
+```
+
+Hace un diagnóstico de solo lectura (stack, hooks, CI, secretos en el historial, dependencias vulnerables, archivos del asistente rastreados), te propone los cambios y, con tu aprobación, los aplica en la rama `chore/adaptar-estandar` con su PR.
+
+### Trabajar en un proyecto
+
+```text
+Añade la firma de partes desde el móvil con el DNI del trabajador
+```
+
+```text
+Al exportar el parte en PDF salen mal las horas extra de los sábados
+```
+
+La primera petición arranca `/equipo:funcionalidad` y la segunda `/equipo:arreglo`. Al final tienes una PR con la especificación enlazada, todos los checks en verde y el resumen de cada auditoría.
+
+## 👥 El equipo
+
+| Agente | Modelo | Qué hace | ¿Modifica código? |
+|---|:---:|---|:---:|
+| 📐 **arquitecto** | Opus | Convierte la especificación en plan y tareas; busca qué reutilizar; escribe ADR cuando hace falta | Solo documentos |
+| ⌨️ **desarrollador** | Sonnet | Implementa con tests primero, un commit por tarea, y corrige los hallazgos | ✅ |
+| 🔎 **revisor** | Opus | Código limpio, duplicación, simplicidad, tests y cumplimiento del plan | ❌ |
+| 🧪 **qa** | Sonnet | Check completo, matriz de criterios, cobertura de lo cambiado, tests intermitentes, build y migraciones | ❌ |
+| 🐛 **cazabugs** | Opus | Límites, entradas inválidas, estados, concurrencia y fallos externos; cada bug con su test | ❌ |
+| 🛡️ **seguridad** | Opus | OWASP Top 10 2025, ASVS, secretos, dependencias y RGPD | ❌ |
+
+**Por qué estos modelos.** Opus donde hay que razonar: diseñar, juzgar calidad e imaginar cómo se rompe o se ataca algo. Sonnet donde las instrucciones ya son precisas: implementar tareas y ejecutar comprobaciones.
+
+**Por qué los auditores no corrigen.** Quien encuentra un fallo no lo arregla, igual que en un equipo real. Así sus informes son independientes y pueden trabajar a la vez sin pisarse.
+
+Cada agente carga al empezar su skill de conocimiento (`diseno-tecnico`, `codigo-limpio`, `revision-codigo`, `control-calidad`, `caza-de-bugs` y `auditoria-seguridad`), con su método, su escala de gravedad y el formato de su informe.
+
+### Gravedad de los hallazgos
+
+| Gravedad | Qué pasa |
+|---|---|
+| 🔴 **Crítico** | Bloquea. Se corrige siempre. |
+| 🟠 **Alto** | Bloquea. Se corrige siempre. |
+| 🟡 **Medio** | Se corrige salvo que decidas aplazarlo. |
+| ⚪ **Bajo** | Se anota en la PR como pendiente. |
+
+## 🔒 Protecciones
+
+Las instrucciones guían; estas protecciones obligan, aunque alguien se las salte.
+
+| Protección | Cómo | Dónde |
+|---|---|---|
+| Sin secretos en git | `gitleaks` en pre-commit y en CI sobre todo el historial | Hook de git y CI |
+| Dependencias sin vulnerabilidades conocidas | `osv-scanner` dentro de `mise run check` | Local y CI |
+| Commits con formato | conventional commits obligatorios, primera línea de 100 caracteres como máximo | Hook `commit-msg` |
+| Autoría limpia | elimina `Co-Authored-By`, enlaces de sesión y «Generated with» | Hook `commit-msg` y ajustes de atribución |
+| Sin commits en `main` | el hook bloquea el commit y obliga a crear rama | Hook de Claude Code |
+| Sin atajos peligrosos | prohibidos force push, `--no-verify`, merge y `npm -g` | Permisos de Claude Code |
+| Nada se integra roto | CI ejecuta el mismo `mise run check` que en local | GitHub Actions o GitLab CI |
+| El merge es tuyo | ningún flujo hace merge | Permisos y flujos |
+
+## 🗂️ Qué queda en cada proyecto
+
+```text
+mi-proyecto/
+├── .githooks/                pre-commit y commit-msg          ┐
+├── .github/ o .gitlab/       CI y plantilla de PR/MR          │
+├── docs/                                                      │
+│   ├── ARCHITECTURE.md       visión, principios y operación   │ En git
+│   ├── adr/                  decisiones                       │
+│   └── specs/                una carpeta por funcionalidad    │
+├── compose.yaml              servicios locales (si los hay)   │
+├── mise.toml                 herramientas y tareas            ┘
+│
+├── CLAUDE.md                 reglas para el asistente         ┐
+├── .claude/                  permisos, hooks, verify, equipo  │ Solo en tu Mac
+└── .worktreeinclude          copia lo anterior a worktrees    ┘
+```
+
+Lo local se excluye en `.git/info/exclude`, así que no aparece en `git status` ni llega nunca al repositorio. Los worktrees que crea Claude Code reciben esos archivos gracias a `.worktreeinclude`.
+
+## 🔧 Mantenimiento
+
+### Actualizar
+
+1. Cambia lo que quieras en este repositorio.
+2. Sube la versión en el `plugin.json` afectado y en `.claude-plugin/marketplace.json`, y anótalo en el [CHANGELOG](CHANGELOG.md).
+3. Haz push y actualiza en el Mac:
+
+```bash
+claude plugin marketplace update taller-dev
+claude plugin update arranque@taller-dev
+claude plugin update equipo@taller-dev
+```
+
+### Desinstalar
+
+```bash
+claude plugin uninstall arranque@taller-dev
+claude plugin marketplace remove taller-dev   # también quita equipo de todos los proyectos
+```
+
+### Coste de contexto
+
+| Plugin | Siempre cargado | Al usarse |
+|---|---|---|
+| `arranque` | ~330 tokens, en todas las sesiones | ~2-5k por skill |
+| `equipo` | ~860 tokens, solo en tus proyectos | ~1-3k por skill o agente |
+
+Medido con `claude plugin details <plugin>@taller-dev`.
+
+## 🏗️ Estructura del repositorio
+
+```text
+taller-dev/
+├── .claude-plugin/marketplace.json     Catálogo con los dos plugins
+├── plugins/
+│   ├── arranque/
+│   │   ├── bin/taller-base             Aplica la base sin sobrescribir nada
+│   │   ├── plantillas/                 Hooks, CI, docs, CLAUDE.md, settings, compose y tareas por stack
+│   │   └── skills/                     nuevo-proyecto · adaptar-proyecto
+│   └── equipo/
+│       ├── agents/                     arquitecto · desarrollador · revisor · qa · cazabugs · seguridad
+│       ├── plantillas/                 spec.md · plan.md · tasks.md
+│       └── skills/                     funcionalidad · arreglo · 6 skills de conocimiento
+├── tests/probar-base.sh                Pruebas del script y los hooks
+└── .github/workflows/validar.yml       Validación en cada push
+```
+
+### Validar en local
+
+```bash
+claude plugin validate --strict .
+claude plugin validate --strict plugins/arranque
+claude plugin validate --strict plugins/equipo
+bash tests/probar-base.sh
+```
+
+Para probar cambios sin instalar: `claude --plugin-dir plugins/equipo`.
+
+---
+
+<div align="center">
+<sub>Hecho para trabajar con calma: plan antes que código, tests antes que implementación y tu revisión antes que el merge.</sub>
+</div>

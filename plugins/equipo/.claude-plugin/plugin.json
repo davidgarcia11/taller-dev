@@ -1,0 +1,10 @@
+{
+  "name": "equipo",
+  "version": "1.0.0",
+  "description": "Equipo de desarrollo por funcionalidad: especificación, plan, desarrollo con tests y auditorías de calidad, estabilidad, bugs y seguridad.",
+  "author": {
+    "name": "David Garcia"
+  },
+  "repository": "https://github.com/davidgarcia11/taller-dev",
+  "keywords": ["sdd", "tdd", "code-review", "qa", "security", "agents"]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "taller-dev",
+  "owner": {
+    "name": "David Garcia"
+  },
+  "metadata": {
+    "description": "Arranque de proyectos y equipo de desarrollo con especificación previa, auditorías y control de versiones profesional.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "arranque",
+      "source": "./plugins/arranque",
+      "description": "Crea proyectos nuevos o adapta los existentes al estándar: plan aprobado, herramientas por proyecto, git, CI y protecciones.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "equipo",
+      "source": "./plugins/equipo",
+      "description": "Equipo de desarrollo por funcionalidad: especificación, plan, desarrollo con tests y auditorías de calidad, estabilidad, bugs y seguridad.",
+      "version": "1.0.0"
+    }
+  ]
+}

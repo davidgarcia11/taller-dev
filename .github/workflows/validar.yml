@@ -1,0 +1,30 @@
+name: Validar
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+      - name: Manifiestos, skills y agentes
+        run: |
+          npx -y @anthropic-ai/claude-code plugin validate --strict .
+          npx -y @anthropic-ai/claude-code plugin validate --strict plugins/arranque
+          npx -y @anthropic-ai/claude-code plugin validate --strict plugins/equipo
+      - name: Shellcheck
+        run: |
+          shellcheck -s bash plugins/arranque/bin/taller-base plugins/arranque/plantillas/local/.claude/hooks/*.sh tests/*.sh
+          shellcheck -s sh plugins/arranque/plantillas/comun/.githooks/*
+      - name: Pruebas de la base y los hooks
+        run: bash tests/probar-base.sh

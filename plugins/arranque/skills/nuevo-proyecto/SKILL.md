@@ -1,6 +1,6 @@
 ---
 name: nuevo-proyecto
-description: Crea un proyecto de software nuevo con nivel profesional. Descubrimiento, plan de stack y arquitectura aprobado antes de crear nada, herramientas por proyecto con mise, git con GitHub o GitLab, CI, protecciones y equipo de desarrollo activado. Usar cuando el usuario quiera crear, empezar, montar o inicializar un proyecto, app o repositorio nuevo.
+description: Crea un proyecto de software nuevo con nivel profesional. Descubrimiento, elección razonada del stack, arquitectura y seguridad desde el diseño en un plan aprobado antes de crear nada, herramientas por proyecto con mise, git con GitHub o GitLab, CI, protecciones y equipo de desarrollo activado. Usar cuando el usuario quiera crear, empezar, montar o inicializar un proyecto, app o repositorio nuevo.
 argument-hint: "[descripción del proyecto]"
 ---
 
@@ -29,47 +29,24 @@ Pregunta con AskUserQuestion solo lo que no se deduzca de `$ARGUMENTS` o del con
 3. Datos personales o sensibles. Si los hay: región UE, minimización, base legal y retención.
 4. Despliegue previsto, entornos y presupuesto.
 5. Forja (GitHub o GitLab) y visibilidad (privado por defecto).
-6. Stack: el que pida el usuario; si no, recomienda priorizando el que ya domina.
+6. Stack: el que pida el usuario (verificado igualmente con [stack.md](stack.md)); si no, lo recomiendas en la fase 2.
 
 ## Fase 2. Plan
 
-Preséntalo en el chat, sin relleno:
+Antes de redactarlo, lee y aplica [stack.md](stack.md) (método y criterios para elegir y verificar el stack), [arquitectura.md](arquitectura.md) (estructura y decisiones que deben quedar escritas) y [seguridad.md](seguridad.md) (seguridad desde el diseño). Preséntalo en el chat, sin relleno:
 
 1. **Alcance v1**: 3 a 7 capacidades y lista de fuera de alcance.
-2. **Stack**: tabla capa | elección | versión verificada | motivo | alternativa descartada. Capas: runtime, framework, datos, auth, hosting, tests, lint/formato.
-3. **Arquitectura**: estilo, diagrama Mermaid de componentes y servicios externos, árbol de carpetas, modelo de datos inicial, límites entre módulos.
+2. **Stack**: tabla capa | elección | versión verificada | fin de soporte | motivo | alternativa descartada. Capas: runtime, framework, datos, auth, hosting, tests, lint/formato.
+3. **Arquitectura**: estilo, diagrama Mermaid, árbol de carpetas, modelo de datos inicial, límites entre módulos y las decisiones de la tabla de [arquitectura.md](arquitectura.md).
 4. **Principios del proyecto**: los cinco base de `docs/ARCHITECTURE.md` más los propios del dominio. Son la referencia de cada especificación futura.
 5. **Calidad**: qué se testea y a qué nivel; qué ejecuta `mise run check`.
-6. **Seguridad y privacidad**: secretos, autenticación y autorización, datos personales, dependencias.
+6. **Seguridad y privacidad**: modelo de amenazas, autenticación, autorización, datos personales (RGPD), secretos, dependencias y cabeceras, según [seguridad.md](seguridad.md).
 7. **Operación**: entornos, despliegue, migraciones, copias de seguridad, logs y errores, secretos en producción.
 8. **Documentación**: siempre README, arquitectura, ADR, especificaciones, comentarios de documentación en la API pública y CHANGELOG desde los commits. Si hay API: referencia OpenAPI generada desde el código. Si hay despliegue: runbook.
 9. **Instalación**: lista exacta de lo que va a `mise.toml`, servicios locales (contenedores) y lo que, si algo, queda global.
 10. **Riesgos y decisiones abiertas.**
 
 Pide aprobación explícita e itera hasta tenerla.
-
-### Criterios de arquitectura
-
-- Monolito modular por defecto. Otra cosa solo con una razón medible.
-- Organiza por dominio o funcionalidad, no por capa técnica.
-- Separa reglas de negocio de I/O solo donde existan reglas de negocio reales.
-- Valida en los bordes (HTTP, formularios, variables de entorno) con esquema (zod, pydantic…). Config por variables de entorno validadas al arrancar.
-- Una sola fuente de verdad para el esquema de datos; tipos derivados de ella. Migraciones versionadas y reversibles.
-- Postgres para datos relacionales multiusuario; SQLite para local o monousuario. Servicios gestionados antes que autogestionados.
-- Tests: unitarios en lógica de dominio, integración en endpoints y base de datos, extremo a extremo solo en flujos críticos.
-
-### Stacks de referencia
-
-| Stack | En `mise.toml` | Scaffold | Tareas base |
-|---|---|---|---|
-| Next.js / React (TS) | `node` LTS | `npx create-next-app@<versión> . --yes --disable-git` | `tareas/node.toml` |
-| API Node (TS) | `node` LTS | `npm init -y` + Fastify o Hono | `tareas/node.toml` |
-| Python (API, CLI, datos) | `python`, `uv` | `uv init` (+ FastAPI si es API) | `tareas/python.toml` |
-| Java / Spring Boot | `java` temurin LTS | Spring Initializr con Maven Wrapper | `tareas/java.toml` |
-| Go | `go`, `golangci-lint` | `go mod init <módulo>` | `tareas/go.toml` |
-| App Apple (SwiftUI) | nada; Xcode del App Store | proyecto de Xcode | swiftlint · `xcodebuild test` |
-
-Lint, formato y test van en `mise.toml` o como dependencias de desarrollo, nunca globales.
 
 ### Servicios locales
 
@@ -120,7 +97,7 @@ Si el scaffold hizo su propio commit, borra `.git` y vuelve a `git init -b main`
 "${CLAUDE_PLUGIN_ROOT}/bin/taller-base" --forja github   # o gitlab; --servicios y --runbook si el plan los incluye
 ```
 
-Copia sin sobrescribir: hooks de git (secretos y formato de commits), `cliff.toml` para el CHANGELOG, CI, plantilla de PR/MR, `docs/` (arquitectura, ADR, especificaciones), `CLAUDE.md`, `.claude/` (permisos, hook que bloquea commits en `main`, skill `verify`), `.worktreeinclude`, con `--servicios` un `compose.yaml` y con `--runbook` un `docs/RUNBOOK.md`. Configura `core.hooksPath`, la exclusión local y el `.gitignore`. Lee su salida y resuelve lo que indique.
+Copia sin sobrescribir: hooks de git (secretos y formato de commits), `cliff.toml` para el CHANGELOG, CI, plantilla de PR/MR, `docs/` (arquitectura, ADR, especificaciones), `CLAUDE.md`, `.claude/` (permisos, hook que bloquea commits en `main`, skill `verify`, reglas por zona en `rules/`), `.worktreeinclude`, con `--servicios` un `compose.yaml` y con `--runbook` un `docs/RUNBOOK.md`. Configura `core.hooksPath`, la exclusión local y el `.gitignore`. Lee su salida y resuelve lo que indique.
 
 ### 4. Rellenar con el plan aprobado
 
@@ -129,6 +106,8 @@ Copia sin sobrescribir: hooks de git (secretos y formato de commits), `cliff.tom
 - Documentación de la API pública exigida por el linter cuando el stack lo permita sin ruido (por ejemplo, reglas `D` de ruff con convención Google, `revive` con `exported` en Go).
 - Con API: OpenAPI generado desde el código, nunca escrito a mano (FastAPI nativo, `@fastify/swagger` o `hono-openapi` con zod, springdoc-openapi, huma en Go), servido en desarrollo y exportado a `docs/api/openapi.json` con una tarea `mise run api-docs`; `check` falla si el exportado no coincide con el código.
 - `CLAUDE.md`, `docs/ARCHITECTURE.md`, `docs/adr/0001-stack-y-arquitectura.md` y, con despliegue, `docs/RUNBOOK.md` con el plan aprobado. Borra las secciones que no apliquen.
+- `.claude/rules/`: en cada regla, sustituye `RUTAS_*` por los patrones reales de la estructura aprobada (por ejemplo `src/**/*.test.ts`) y `COMANDO_TEST_ARCHIVO` por el comando del stack. Borra las que no apliquen y añade las del dominio. En `CLAUDE.md` solo lo que vale para todo el proyecto; lo de una zona del código va en su regla.
+- Seguridad del código inicial según [seguridad.md](seguridad.md): cabeceras, validación de configuración y autenticación de librería, presentes desde el primer commit.
 - `README.md`: qué es, requisitos (mise; Colima si hay servicios), arranque (`mise trust && mise install && mise run setup`) y comandos.
 - `.env.example`: cada variable que necesite el proyecto, sin valores.
 - GitHub: `ECOSISTEMA` en `.github/dependabot.yml`. GitLab: `VERSION_MISE` en `.gitlab-ci.yml` (salida de `mise --version`).
@@ -138,7 +117,7 @@ Copia sin sobrescribir: hooks de git (secretos y formato de commits), `cliff.tom
 No debe quedar ningún marcador:
 
 ```bash
-grep -rnE 'NOMBRE|VERSION_[A-Z]+|ECOSISTEMA|AAAA-MM-DD' --exclude-dir={.git,node_modules,.venv,target,.mise} .
+grep -rnE 'NOMBRE|VERSION_[A-Z]+|ECOSISTEMA|AAAA-MM-DD|RUTAS_[A-Z_]+|COMANDO_TEST' --exclude-dir={.git,node_modules,.venv,target,.mise} . .claude
 grep -n '<!--' CLAUDE.md docs/ARCHITECTURE.md docs/adr/0001-*.md docs/RUNBOOK.md 2>/dev/null
 ```
 
@@ -198,7 +177,7 @@ git remote -v          # si no hay origin: git remote add origin <url>
 git push -u origin main
 ```
 
-GitHub privado gratuito no protege ramas: el hook de Claude hace de barrera. GitLab protege `main` por defecto.
+GitHub: activa las alertas y actualizaciones de seguridad de Dependabot con los dos comandos de [seguridad.md](seguridad.md). Un repositorio privado gratuito no protege ramas: el hook de Claude hace de barrera. GitLab protege `main` por defecto.
 
 ### 9. Comprobación de limpieza
 

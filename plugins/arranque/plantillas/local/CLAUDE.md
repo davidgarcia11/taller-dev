@@ -6,6 +6,7 @@
 
 - Stack: <!-- runtime · framework · datos · auth · hosting -->. Versiones en `mise.toml`.
 - Arquitectura y principios: `docs/ARCHITECTURE.md`. Decisiones: `docs/adr/`. Especificaciones: `docs/specs/`.
+- Reglas de cada zona del código (tests, API, datos, interfaz, zonas sensibles) en `.claude/rules/`: se cargan solas al tocar esos archivos.
 - Léelos antes de diseñar o cambiar estructura.
 
 ## Vocabulario del dominio

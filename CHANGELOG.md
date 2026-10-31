@@ -2,6 +2,19 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.4.0] - 2026-10-31
+
+### Añadido
+
+- **arranque**: método para elegir el stack con criterios eliminatorios y verificación en vivo de versión, fin de soporte, mantenimiento, vulnerabilidades y licencia (`stack.md`).
+- **arranque**: guía de arquitectura con las decisiones que el plan debe dejar escritas (`arquitectura.md`).
+- **arranque**: seguridad desde el diseño: modelo de amenazas, autenticación, autorización, RGPD, secretos, dependencias, cabeceras y alertas de Dependabot activadas al crear el repositorio (`seguridad.md`).
+- **arranque**: reglas por zona del código en `.claude/rules/` (tests, API, datos, interfaz y zonas sensibles), que se cargan solo al tocar esos archivos.
+
+### Cambiado
+
+- **equipo**: al cerrar una funcionalidad, las reglas nuevas van a `CLAUDE.md` si son generales o a su regla de `.claude/rules/` si son de una zona.
+
 ## [1.3.0] - 2026-10-31
 
 ### Añadido

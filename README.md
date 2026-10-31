@@ -6,7 +6,7 @@
 
 Tres plugins de Claude Code: uno arranca o adapta proyectos con el estándar, otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión, y un panel te enseña en todo momento qué hace cada agente y cuánto te queda de tu plan.
 
-![Versión](https://img.shields.io/badge/versión-1.3.0-2563eb?style=flat-square)
+![Versión](https://img.shields.io/badge/versión-1.4.0-2563eb?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude_Code-plugins-d97757?style=flat-square)
 ![Metodología](https://img.shields.io/badge/SDD_·_TDD-especificación_primero-16a34a?style=flat-square)
 ![Forjas](https://img.shields.io/badge/GitHub_·_GitLab-soportados-6b7280?style=flat-square)
@@ -138,14 +138,21 @@ El plugin `equipo` no se instala a mano: `nuevo-proyecto` y `adaptar-proyecto` l
 Quiero crear una app para gestionar los partes de obra desde el móvil
 ```
 
-O directamente `/arranque:nuevo-proyecto`. Te preguntará lo necesario, te enseñará el plan y, cuando lo apruebes, creará el proyecto, el repositorio privado y lo dejará listo con:
+O directamente `/arranque:nuevo-proyecto`. Te preguntará lo necesario y te presentará un plan razonado:
+
+- **Stack** elegido con criterios eliminatorios (madurez, soporte, seguridad, tipado, coste, ecosistema) y verificado en vivo: versión estable, fin de soporte, mantenimiento, vulnerabilidades y licencia. Prioriza lo que ya dominas.
+- **Arquitectura** con las decisiones escritas: módulos por dominio, datos y migraciones, errores, observabilidad, contratos, concurrencia, ficheros e interfaz.
+- **Seguridad desde el diseño**: modelo de amenazas, autenticación y autorización, RGPD, secretos, dependencias y cabeceras.
+
+Cuando lo apruebes, creará el proyecto, el repositorio privado y lo dejará listo con:
 
 - Herramientas fijadas por proyecto en `mise.toml`. Nada global.
 - Hooks de git: secretos bloqueados, conventional commits obligatorios y autoría limpia.
 - CI en GitHub Actions o GitLab CI que ejecuta exactamente `mise run check`.
 - Plantilla de PR/MR, Dependabot (GitHub), `docs/` con arquitectura, ADR y especificaciones, y CHANGELOG generado desde los commits.
 - Servicios locales con Colima y `compose.yaml` si el proyecto los necesita.
-- `CLAUDE.md`, permisos, hooks y el equipo activados solo en local.
+- Seguridad presente desde el primer commit: cabeceras, validación de configuración, autenticación de librería y alertas de Dependabot activadas.
+- `CLAUDE.md`, reglas por zona del código en `.claude/rules/`, permisos, hooks y el equipo, activados solo en local.
 
 ### Adaptar un proyecto existente
 
@@ -290,8 +297,8 @@ mi-proyecto/
 ├── cliff.toml · CHANGELOG.md  cambios por versión             │
 ├── mise.toml                 herramientas y tareas            ┘
 │
-├── CLAUDE.md                 reglas para el asistente         ┐
-├── .claude/                  permisos, hooks, verify, equipo  │ Solo en tu Mac
+├── CLAUDE.md                 reglas generales del proyecto    ┐
+├── .claude/                  reglas por zona, permisos, hooks │ Solo en tu Mac
 └── .worktreeinclude          copia lo anterior a worktrees    ┘
 ```
 
@@ -339,7 +346,7 @@ taller-dev/
 │   ├── arranque/
 │   │   ├── bin/taller-base             Aplica la base sin sobrescribir nada
 │   │   ├── plantillas/                 Hooks, CI, docs, runbook, CHANGELOG, CLAUDE.md, settings, compose y tareas
-│   │   └── skills/                     nuevo-proyecto · adaptar-proyecto
+│   │   └── skills/                     nuevo-proyecto (+ stack, arquitectura, seguridad) · adaptar-proyecto
 │   ├── equipo/
 │   │   ├── agents/                     desarrollador · revisor · qa · cazabugs · seguridad
 │   │   ├── plantillas/                 spec.md · plan.md · tasks.md

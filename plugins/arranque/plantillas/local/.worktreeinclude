@@ -4,3 +4,4 @@ CLAUDE.md
 .claude/hooks/
 .env
 .env.local
+.claude/rules/

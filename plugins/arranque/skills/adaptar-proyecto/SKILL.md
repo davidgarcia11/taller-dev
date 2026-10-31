@@ -46,7 +46,7 @@ git log --format=%B | grep -icE 'co-authored-by: claude|generated with \[claude'
 Presenta, sin relleno:
 
 1. **Diagnóstico**: tabla área | estado | acción propuesta.
-2. **Riesgos inmediatos**: secretos encontrados (primero se rotan; limpiar el historial es una decisión aparte), dependencias vulnerables, tests rotos.
+2. **Riesgos inmediatos**: secretos encontrados (primero se rotan; limpiar el historial es una decisión aparte), dependencias vulnerables, tests rotos y las carencias frente a `${CLAUDE_PLUGIN_ROOT}/skills/nuevo-proyecto/seguridad.md` (autorización, cabeceras, gestión de secretos, datos personales).
 3. **Cambios de esta PR**, en commits lógicos.
 4. **Fuera de esta PR**: deuda que no se toca, con su motivo.
 5. **Decisiones para el usuario**: qué hacer si el check no pasa con el código actual; si se limpia el historial; si hay hooks o CI previos, si se reemplazan o se integran.
@@ -71,7 +71,7 @@ Crea una lista de tareas con estos pasos.
    - `CHANGELOG.md`: si el historial ya usa conventional commits, `mise run changelog`; si no, empieza desde esta PR con una entrada que resuma el estado actual.
    - Si hay API sin referencia: propón OpenAPI generado desde el código como trabajo aparte, no en esta PR.
    - Si hay despliegue: `docs/RUNBOOK.md` con lo que hoy se hace de verdad; marca como pendiente lo que no exista (por ejemplo, copias sin prueba de restauración).
-8. **CLAUDE.md** con la realidad del proyecto: vocabulario, reglas y comandos.
+8. **CLAUDE.md y `.claude/rules/`** con la realidad del proyecto: vocabulario, reglas generales y comandos en `CLAUDE.md`; reglas de cada zona (tests, API, datos, interfaz, zonas sensibles) con los patrones de ruta reales del código.
 9. **Equipo**: `claude plugin install equipo@taller-dev --scope local`.
 10. **Protecciones**: las dos pruebas de `nuevo-proyecto` (secreto y mensaje sin formato) deben fallar.
 11. **PR**: commits lógicos, `mise run check` en verde, push y PR/MR con la plantilla. Resume diagnóstico, cambios y deuda pendiente.

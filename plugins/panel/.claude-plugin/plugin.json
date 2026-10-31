@@ -1,0 +1,11 @@
+{
+  "name": "panel",
+  "version": "1.3.0",
+  "description": "Panel visual de la sesión: uso del plan, qué hace cada agente, tokens y coste por agente, historial mensual y resumen.",
+  "author": {
+    "name": "David Garcia"
+  },
+  "repository": "https://github.com/davidgarcia11/taller-dev",
+  "keywords": ["mod", "panel", "uso", "coste", "agentes"],
+  "types": "./types/index.d.ts"
+}

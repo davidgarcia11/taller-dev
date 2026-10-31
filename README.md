@@ -4,15 +4,15 @@
 
 **Proyectos profesionales desde el primer commit y un equipo de desarrollo completo en cada funcionalidad.**
 
-Dos plugins de Claude Code: uno arranca o adapta proyectos con el estándar, el otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión.
+Tres plugins de Claude Code: uno arranca o adapta proyectos con el estándar, otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión, y un panel te enseña en todo momento qué hace cada agente y cuánto te queda de tu plan.
 
-![Versión](https://img.shields.io/badge/versión-1.2.0-2563eb?style=flat-square)
+![Versión](https://img.shields.io/badge/versión-1.3.0-2563eb?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude_Code-plugins-d97757?style=flat-square)
 ![Metodología](https://img.shields.io/badge/SDD_·_TDD-especificación_primero-16a34a?style=flat-square)
 ![Forjas](https://img.shields.io/badge/GitHub_·_GitLab-soportados-6b7280?style=flat-square)
 ![Uso](https://img.shields.io/badge/uso-privado-111827?style=flat-square)
 
-[Qué incluye](#-qué-incluye) · [Cómo funciona](#-cómo-funciona) · [Instalación](#-instalación) · [Uso](#-uso) · [El equipo](#-el-equipo) · [Documentación](#-documentación) · [Protecciones](#-protecciones) · [Mantenimiento](#-mantenimiento)
+[Qué incluye](#-qué-incluye) · [Cómo funciona](#-cómo-funciona) · [Instalación](#-instalación) · [Uso](#-uso) · [El equipo](#-el-equipo) · [Panel](#-panel) · [Documentación](#-documentación) · [Protecciones](#-protecciones) · [Mantenimiento](#-mantenimiento)
 
 </div>
 
@@ -22,7 +22,7 @@ Dos plugins de Claude Code: uno arranca o adapta proyectos con el estándar, el 
 
 <table>
 <tr>
-<td width="50%" valign="top">
+<td width="33%" valign="top">
 
 ### 🚀 `arranque`
 
@@ -32,7 +32,7 @@ Activo en todo el Mac. Prepara proyectos.
 - **`/arranque:adaptar-proyecto`**: diagnóstico de un proyecto existente y PR que lo lleva al estándar sin romper nada.
 
 </td>
-<td width="50%" valign="top">
+<td width="33%" valign="top">
 
 ### 👥 `equipo`
 
@@ -40,6 +40,17 @@ Activo solo en tus proyectos. Hace el trabajo.
 
 - **`/equipo:funcionalidad`**: especificación, plan, desarrollo con tests y cuatro auditorías antes de abrir la PR.
 - **`/equipo:arreglo`**: causa raíz, test que reproduce el bug, corrección mínima y auditorías proporcionales.
+
+</td>
+<td width="33%" valign="top">
+
+### 📊 `panel`
+
+Activo en todo el Mac. Te enseña lo que pasa.
+
+- **Franja** siempre visible: uso del plan, coste y agente activo.
+- **`/panel`**: agentes, tokens y coste por agente, mes y cronología.
+- **`/panel-resumen`**: resumen redactado de la sesión.
 
 </td>
 </tr>
@@ -106,8 +117,9 @@ Requisitos: macOS con [Homebrew](https://brew.sh), `git`, [`mise`](https://mise.
 # 1. Registra el catálogo (una vez por Mac; usa tu sesión de gh)
 claude plugin marketplace add davidgarcia11/taller-dev
 
-# 2. Instala arranque en todo el Mac
+# 2. Instala arranque y panel en todo el Mac
 claude plugin install arranque@taller-dev
+claude plugin install panel@taller-dev
 
 # 3. Comprueba
 claude plugin list
@@ -185,6 +197,52 @@ Cada agente carga al empezar su skill de conocimiento (`codigo-limpio`, `revisio
 | 🟡 **Medio** | Se corrige salvo que decidas aplazarlo. |
 | ⚪ **Bajo** | Se anota en la PR como pendiente. |
 
+## 📊 Panel
+
+Un mod de Claude Code que dibuja dos cosas: una franja fija sobre el cuadro de texto y un panel completo que abres con `/panel` o con su botón.
+
+```text
+5 h 52 % (2 h 10 min) · semana 21 % · sesión 10,80 $ · ● desarrollador: edita partes.ts   [ Panel ]
+```
+
+```text
+TU PLAN
+5 horas █████████░░░░░░░░  52 %  se renueva en 2 h 10 min
+Semana  ███░░░░░░░░░░░░░░  21 %  se renueva en 1 d 20 h
+
+AHORA
+● desarrollador  Sonnet · edita partes.ts
+● qa             Sonnet · ejecuta mise run check
+✓ revisor        Opus · terminado
+
+CONSUMO DE LA SESIÓN
+                  Modelo    Entrada   Salida     API $
+sesión principal  Opus       1,24 M   38,2 k    4,10 $
+desarrollador     Sonnet     2,06 M   51,7 k    2,92 $
+revisor           Opus       0,41 M   12,9 k    1,62 $
+Total                        4,98 M  131,4 k   10,80 $
+Este mes en Claude Code: 143,20 $ · mes anterior: 98,10 $
+
+RESUMEN                [ Redactar con Haiku ]
+12:03  Tú: añade la firma de partes desde el móvil
+12:20  Lanza desarrollador: Implementa T1-T3
+12:41  revisor termina (4 min) · CAMBIOS NECESARIOS
+12:58  PR abierta: https://github.com/…/pull/14
+```
+
+| Dato | De dónde sale | Precisión |
+|---|---|---|
+| % de las 5 horas y semanal, y cuándo se renuevan | Lo que Anthropic envía a Claude Code tras cada respuesta. Incluye el chat y otros proyectos, porque comparten cupo | Exacto, actualizado en la siguiente respuesta |
+| Qué hace cada agente | Cada herramienta que usa, con su agente | Exacto, en tiempo real |
+| Tokens de entrada y salida por agente | Cada petición al modelo | Exacto. La entrada incluye los tokens leídos de caché |
+| Coste por agente | Tokens × precios oficiales de la API | Exacto según la tabla de precios (la escritura en caché se cuenta a la tarifa de 5 minutos) |
+| Coste de la sesión | El mismo total que `/cost` | Exacto |
+| Coste del mes | Suma de las sesiones de Claude Code con el panel activo | Exacto para Claude Code; el chat no expone su consumo |
+
+Los dólares son lo que costaría por API: con tu suscripción no los pagas. Sirven para decidir si algún día te compensaría la API. Avisa con una notificación al llegar al 80 % y al 95 % de tu límite de 5 horas, y al 90 % del semanal.
+
+Necesita Claude Code 2.1.287 o posterior. Se dibuja en la terminal y en la pestaña Code de la app de escritorio; en el chat de la extensión de VS Code no se ve.
+
 ## 📚 Documentación
 
 Cada proyecto se documenta mientras se programa, no al final. El plan de cada funcionalidad dice qué documentos cambian y cada tarea los actualiza en su propio commit; el revisor lo comprueba.
@@ -251,12 +309,14 @@ Lo local se excluye en `.git/info/exclude`, así que no aparece en `git status` 
 claude plugin marketplace update taller-dev
 claude plugin update arranque@taller-dev
 claude plugin update equipo@taller-dev
+claude plugin update panel@taller-dev
 ```
 
 ### Desinstalar
 
 ```bash
 claude plugin uninstall arranque@taller-dev
+claude plugin uninstall panel@taller-dev
 claude plugin marketplace remove taller-dev   # también quita equipo de todos los proyectos
 ```
 
@@ -266,6 +326,7 @@ claude plugin marketplace remove taller-dev   # también quita equipo de todos l
 |---|---|---|
 | `arranque` | ~330 tokens, en todas las sesiones | ~2-5k por skill |
 | `equipo` | ~860 tokens, solo en tus proyectos | ~1-3k por skill o agente |
+| `panel` | 0: no añade instrucciones a Claude | céntimos por cada `/panel-resumen` |
 
 Medido con `claude plugin details <plugin>@taller-dev`.
 
@@ -273,16 +334,20 @@ Medido con `claude plugin details <plugin>@taller-dev`.
 
 ```text
 taller-dev/
-├── .claude-plugin/marketplace.json     Catálogo con los dos plugins
+├── .claude-plugin/marketplace.json     Catálogo con los tres plugins
 ├── plugins/
 │   ├── arranque/
 │   │   ├── bin/taller-base             Aplica la base sin sobrescribir nada
 │   │   ├── plantillas/                 Hooks, CI, docs, runbook, CHANGELOG, CLAUDE.md, settings, compose y tareas
 │   │   └── skills/                     nuevo-proyecto · adaptar-proyecto
-│   └── equipo/
-│       ├── agents/                     desarrollador · revisor · qa · cazabugs · seguridad
-│       ├── plantillas/                 spec.md · plan.md · tasks.md
-│       └── skills/                     funcionalidad · arreglo · 6 skills de conocimiento
+│   ├── equipo/
+│   │   ├── agents/                     desarrollador · revisor · qa · cazabugs · seguridad
+│   │   ├── plantillas/                 spec.md · plan.md · tasks.md
+│   │   └── skills/                     funcionalidad · arreglo · 6 skills de conocimiento
+│   └── panel/
+│       ├── hooks/                      register.tsx (franja, panel y eventos) · logica.ts (precios y formato)
+│       ├── types/                      contrato del estado del panel
+│       └── tests/                      pruebas automáticas del mod
 ├── tests/probar-base.sh                Pruebas del script y los hooks
 └── .github/workflows/validar.yml       Validación en cada push
 ```
@@ -293,6 +358,8 @@ taller-dev/
 claude plugin validate --strict .
 claude plugin validate --strict plugins/arranque
 claude plugin validate --strict plugins/equipo
+claude plugin validate --strict plugins/panel
+claude plugin test plugins/panel
 bash tests/probar-base.sh
 ```
 

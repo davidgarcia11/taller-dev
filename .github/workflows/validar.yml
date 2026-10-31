@@ -22,6 +22,9 @@ jobs:
           npx -y @anthropic-ai/claude-code plugin validate --strict .
           npx -y @anthropic-ai/claude-code plugin validate --strict plugins/arranque
           npx -y @anthropic-ai/claude-code plugin validate --strict plugins/equipo
+          npx -y @anthropic-ai/claude-code plugin validate --strict plugins/panel
+      - name: Tests del panel
+        run: npx -y @anthropic-ai/claude-code plugin test plugins/panel
       - name: Shellcheck
         run: |
           shellcheck -s bash plugins/arranque/bin/taller-base plugins/arranque/plantillas/local/.claude/hooks/*.sh tests/*.sh

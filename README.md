@@ -6,7 +6,7 @@
 
 Dos plugins de Claude Code: uno arranca o adapta proyectos con el estándar, el otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión.
 
-![Versión](https://img.shields.io/badge/versión-1.1.0-2563eb?style=flat-square)
+![Versión](https://img.shields.io/badge/versión-1.2.0-2563eb?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude_Code-plugins-d97757?style=flat-square)
 ![Metodología](https://img.shields.io/badge/SDD_·_TDD-especificación_primero-16a34a?style=flat-square)
 ![Forjas](https://img.shields.io/badge/GitHub_·_GitLab-soportados-6b7280?style=flat-square)
@@ -56,7 +56,7 @@ flowchart TD
     A([💬 Pides una funcionalidad]) --> B[📝 Especificación<br/><sub>problema, historias y criterios de aceptación</sub>]
     B --> C{✅ Apruebas}
     C -->|cambios| B
-    C -->|sí| D[📐 Plan técnico<br/><sub>arquitecto · Opus</sub>]
+    C -->|sí| D[📐 Plan técnico<br/><sub>sesión principal · Opus</sub>]
     D --> E{✅ Apruebas}
     E -->|cambios| D
     E -->|sí| F[⌨️ Desarrollo con tests primero<br/><sub>desarrollador · Sonnet · un commit por tarea</sub>]
@@ -157,9 +157,9 @@ La primera petición arranca `/equipo:funcionalidad` y la segunda `/equipo:arreg
 
 ## 👥 El equipo
 
-| Agente | Modelo | Qué hace | ¿Modifica código? |
+| Rol | Modelo | Qué hace | ¿Modifica código? |
 |---|:---:|---|:---:|
-| 📐 **arquitecto** | Opus | Convierte la especificación en plan y tareas; busca qué reutilizar; escribe ADR cuando hace falta | Solo documentos |
+| 🧭 **jefe técnico** (sesión principal) | Opus | Especifica contigo, planifica con la skill `diseno-tecnico`, coordina a los agentes y abre la PR | Solo documentos |
 | ⌨️ **desarrollador** | Sonnet | Implementa con tests primero, un commit por tarea, y corrige los hallazgos | ✅ |
 | 🔎 **revisor** | Opus | Código limpio, duplicación, simplicidad, tests y cumplimiento del plan | ❌ |
 | 🧪 **qa** | Sonnet | Check completo, matriz de criterios, cobertura de lo cambiado, tests intermitentes, build y migraciones | ❌ |
@@ -168,9 +168,13 @@ La primera petición arranca `/equipo:funcionalidad` y la segunda `/equipo:arreg
 
 **Por qué estos modelos.** Opus donde hay que razonar: diseñar, juzgar calidad e imaginar cómo se rompe o se ataca algo. Sonnet donde las instrucciones ya son precisas: implementar tareas y ejecutar comprobaciones.
 
+**Por qué el plan lo hace la sesión principal.** Es quien ha hablado contigo y conoce los matices de la especificación. Un agente aparte empezaría solo con `spec.md`. El plan se escribe para que baste por sí solo, porque el desarrollador trabaja únicamente con los documentos.
+
+**Por qué un solo agente escribe código.** Varios agentes escribiendo a la vez toman decisiones implícitas que chocan entre sí. Con un único escritor y revisores independientes, cada cambio es coherente y se verifica desde fuera.
+
 **Por qué los auditores no corrigen.** Quien encuentra un fallo no lo arregla, igual que en un equipo real. Así sus informes son independientes y pueden trabajar a la vez sin pisarse.
 
-Cada agente carga al empezar su skill de conocimiento (`diseno-tecnico`, `codigo-limpio`, `revision-codigo`, `control-calidad`, `caza-de-bugs` y `auditoria-seguridad`), con su método, su escala de gravedad y el formato de su informe.
+Cada agente carga al empezar su skill de conocimiento (`codigo-limpio`, `revision-codigo`, `control-calidad`, `caza-de-bugs` y `auditoria-seguridad`), con su método, su escala de gravedad y el formato de su informe. La sesión principal carga `diseno-tecnico` al planificar.
 
 ### Gravedad de los hallazgos
 
@@ -276,7 +280,7 @@ taller-dev/
 │   │   ├── plantillas/                 Hooks, CI, docs, runbook, CHANGELOG, CLAUDE.md, settings, compose y tareas
 │   │   └── skills/                     nuevo-proyecto · adaptar-proyecto
 │   └── equipo/
-│       ├── agents/                     arquitecto · desarrollador · revisor · qa · cazabugs · seguridad
+│       ├── agents/                     desarrollador · revisor · qa · cazabugs · seguridad
 │       ├── plantillas/                 spec.md · plan.md · tasks.md
 │       └── skills/                     funcionalidad · arreglo · 6 skills de conocimiento
 ├── tests/probar-base.sh                Pruebas del script y los hooks

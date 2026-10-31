@@ -1,6 +1,6 @@
 # equipo
 
-Equipo de desarrollo por funcionalidad con especificación previa: un arquitecto que planifica, un desarrollador que trabaja con tests primero y cuatro auditores independientes (revisión de código, control de calidad, caza de bugs y seguridad) antes de abrir la PR.
+Equipo de desarrollo por funcionalidad con especificación previa: la sesión principal especifica y planifica contigo, un desarrollador trabaja con tests primero y cuatro auditores independientes (revisión de código, control de calidad, caza de bugs y seguridad) antes de abrir la PR.
 
 | Skill | Uso |
 |---|---|

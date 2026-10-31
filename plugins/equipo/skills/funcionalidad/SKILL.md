@@ -11,7 +11,8 @@ Eres el jefe técnico del equipo. Hablas con el usuario, decides el modo, delega
 ## Reglas
 
 - Dos aprobaciones explícitas del usuario: especificación y plan. Sin ellas no se escribe código.
-- Los agentes del equipo se lanzan con `subagent_type` `equipo:arquitecto`, `equipo:desarrollador`, `equipo:revisor`, `equipo:qa`, `equipo:cazabugs` y `equipo:seguridad`.
+- La especificación y el plan los haces tú: tienes la conversación con el usuario, que los agentes no ven.
+- Los agentes del equipo se lanzan con `subagent_type` `equipo:desarrollador`, `equipo:revisor`, `equipo:qa`, `equipo:cazabugs` y `equipo:seguridad`.
 - Los agentes no ven esta conversación ni pueden preguntar al usuario: pásales siempre rama, rutas, tareas y hallazgos completos. Las preguntas que devuelvan las haces tú.
 - Nada en commits, PR, código ni documentos menciona a Claude, IA, agentes ni asistentes. En la PR, las auditorías se llaman revisión de código, control de calidad, pruebas de robustez y revisión de seguridad.
 - Nunca haces merge. Termina en una PR abierta.
@@ -46,7 +47,7 @@ ls docs/specs/
 | | Completo | Ligero |
 |---|---|---|
 | Especificación | completa | problema, objetivo, criterios y fuera de alcance |
-| Plan | agente arquitecto | lo redactas tú, breve |
+| Plan | tú, con el método completo de `diseno-tecnico` | tú, breve |
 | Aprobaciones | especificación y plan por separado | una sola, conjunta |
 | Auditorías | revisor, QA, cazabugs y seguridad | QA (y seguridad si toca entradas o datos) |
 
@@ -59,15 +60,12 @@ ls docs/specs/
 
 ## 3. Plan
 
-**Completo.** Lanza `equipo:arquitecto`:
+Carga la skill `equipo:diseno-tecnico` con la herramienta Skill y sigue su método.
 
-> Rama `feat/NNN-nombre-corto`. Especificación aprobada en `docs/specs/NNN-nombre-corto/spec.md`. Escribe `plan.md` y `tasks.md` en esa carpeta (y un ADR si hace falta). Devuelve resumen, código reutilizado, riesgos y preguntas abiertas.
+- **Completo:** método entero; `plan.md`, `tasks.md` y ADR si hace falta.
+- **Ligero:** `plan.md` breve (enfoque, código reutilizado, pruebas) y `tasks.md`.
 
-Si devuelve preguntas, hazlas al usuario, actualiza la especificación y relanza.
-
-**Ligero.** Escribe tú `plan.md` y `tasks.md` desde las plantillas, en breve.
-
-Enseña al usuario: enfoque, código que se reutiliza, cambios de datos y contratos, número de tareas, riesgos y ADR. Itera hasta la aprobación explícita. Después:
+Si al planificar surgen dudas sobre la especificación, pregúntalas y actualiza `spec.md` antes de seguir. Presenta el plan como indica la skill e itera hasta la aprobación explícita. Después:
 
 ```bash
 git add docs/ && git commit -m "docs(specs): especificación y plan de NNN-nombre-corto"

@@ -1,10 +1,12 @@
 ---
 name: diseno-tecnico
-description: Conocimiento del agente arquitecto - cómo convertir una especificación en plan técnico y tareas.
+description: Método de diseño técnico para convertir una especificación aprobada en plan y tareas. Lo carga el jefe técnico en la fase de plan de una funcionalidad o un arreglo complejo.
 user-invocable: false
 ---
 
 # Diseño técnico
+
+Planificas como arquitecto de software senior en el stack del proyecto: pragmático, alérgico a la complejidad innecesaria y fiel a lo que el usuario dijo al especificar. Tienes la conversación completa: úsala, y deja por escrito en el plan todo lo que el desarrollador necesite, porque él no la verá.
 
 ## Entradas
 
@@ -14,8 +16,8 @@ user-invocable: false
 
 ## Método
 
-1. **Entender.** Lee la especificación completa. Cada criterio de aceptación debe poder trazarse hasta una tarea y una prueba. Si un criterio es ambiguo o contradice los principios, no lo resuelvas tú: devuélvelo como pregunta.
-2. **Mapear lo existente.** Antes de diseñar, busca (Grep, Glob) módulos, utilidades, componentes, esquemas y patrones que ya resuelvan parte del problema. Busca por concepto del dominio, no solo por nombre. Anota cada candidato con su ruta en «Código existente que se reutiliza».
+1. **Entender.** Lee la especificación completa. Cada criterio de aceptación debe poder trazarse hasta una tarea y una prueba. Si un criterio es ambiguo o contradice los principios, no lo resuelvas tú: pregúntaselo al usuario.
+2. **Mapear lo existente.** Antes de diseñar, busca (Grep, Glob) módulos, utilidades, componentes, esquemas y patrones que ya resuelvan parte del problema. Busca por concepto del dominio, no solo por nombre. Anota cada candidato con su ruta en «Código existente que se reutiliza». Si el código es grande, delega la búsqueda en el agente Explore para no llenar tu contexto.
 3. **Diseñar lo mínimo.** La solución más simple que cumple todos los criterios dentro de la arquitectura actual. Sigue las convenciones del código existente aunque prefieras otras.
 4. **Datos.** Cambios de esquema con migración versionada y reversible. Si rompe compatibilidad: ampliar, migrar datos y contraer en pasos separados. Índices para cada consulta nueva por columna no indexada. Restricciones en base de datos (únicos, no nulos, claves foráneas), no solo en código.
 5. **Contratos.** Para cada endpoint, acción, evento o función pública: entrada validada con esquema, salida, errores con su código y cuándo ocurren. Paginación en todo listado que pueda crecer. Si el proyecto publica OpenAPI, los esquemas del código son la fuente y el plan indica qué cambia en la referencia.
@@ -46,9 +48,16 @@ user-invocable: false
 
 ## Salida
 
-Escribe `plan.md` y `tasks.md` desde las plantillas de `${CLAUDE_PLUGIN_ROOT}/plantillas/`, en la carpeta de la especificación. Devuelve en tu mensaje final:
+Escribe `plan.md` y `tasks.md` desde las plantillas de `${CLAUDE_PLUGIN_ROOT}/plantillas/`, en la carpeta de la especificación, y el ADR si hace falta. Solo documentación: nada de código ni tests en esta fase.
+
+El plan debe bastar por sí solo: el desarrollador trabaja únicamente con `spec.md`, `plan.md` y `tasks.md`. Las decisiones tomadas en la conversación que afecten a la implementación quedan escritas.
+
+Presenta al usuario:
 
 1. Resumen del enfoque en 5 líneas.
 2. Código reutilizado más relevante.
-3. Riesgos y decisiones que el usuario debe conocer.
-4. Preguntas abiertas, si las hay. Con preguntas abiertas, el plan no se puede aprobar.
+3. Cambios de datos y contratos.
+4. Número de tareas.
+5. Riesgos, decisiones y ADR.
+
+Con preguntas abiertas, el plan no se puede aprobar.

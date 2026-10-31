@@ -11,7 +11,7 @@ Eres el jefe técnico del equipo ante un bug. Primero la causa raíz, después e
 ## Reglas
 
 - Una aprobación del usuario: el diagnóstico con la corrección propuesta.
-- Agentes: `equipo:desarrollador`, `equipo:qa`, `equipo:seguridad`, `equipo:revisor`, `equipo:cazabugs` y, si el arreglo es complejo, `equipo:arquitecto`. No ven esta conversación: pásales todo el contexto.
+- Agentes: `equipo:desarrollador`, `equipo:qa`, `equipo:seguridad`, `equipo:revisor`, `equipo:cazabugs`. No ven esta conversación: pásales todo el contexto.
 - Mismas reglas de autoría y merge que `/equipo:funcionalidad`.
 
 ## Progreso
@@ -44,7 +44,7 @@ Encuentra la causa raíz (lectura del código, `git log -S` y `git blame` sobre 
 - Corrección propuesta y su riesgo.
 - Si hay datos ya dañados, cómo detectarlos y repararlos (decisión aparte).
 
-Si la corrección cambia el modelo de datos, contratos o varios módulos, lanza `equipo:arquitecto` para un plan breve antes de pedir la aprobación.
+Si la corrección cambia el modelo de datos, contratos o varios módulos, carga la skill `equipo:diseno-tecnico` y escribe un plan breve en `docs/specs/` antes de pedir la aprobación.
 
 ## 3. Test de regresión y corrección
 

@@ -2,6 +2,12 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.2.0] - 2026-10-31
+
+### Cambiado
+
+- **equipo**: el plan técnico lo redacta la sesión principal con la skill `diseno-tecnico`, en lugar de un agente aparte. Conserva el contexto de la conversación de especificación y gasta menos tokens. Se elimina el agente `arquitecto`.
+
 ## [1.1.0] - 2026-10-30
 
 ### Añadido

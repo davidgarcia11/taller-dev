@@ -2,6 +2,12 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.4.1] - 2026-11-02
+
+### Corregido
+
+- **panel**: las barras del plan se ajustan al ancho del panel y la hora de renovación ya no salta de línea.
+
 ## [1.4.0] - 2026-10-31
 
 ### Añadido

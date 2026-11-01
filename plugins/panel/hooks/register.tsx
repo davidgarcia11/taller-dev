@@ -338,7 +338,8 @@ export const register: Register = on => {
     const ahora = await $.clock.now()
 
     const ancho = e.props.bodyColumns
-    const barraAncho = Math.max(8, Math.min(24, ancho - 34))
+    // Etiqueta (8) + porcentaje (6) + «  se renueva en 2 d 23 h» (24): la barra ocupa el resto, sin partir la línea.
+    const barraAncho = Math.max(6, Math.min(24, ancho - 38))
     const conModelo = ancho >= 58
     const sumaAgentes = lista.reduce((s, a) => s + a.usd, 0)
     const total = Math.max(p.sesionUsd, sumaAgentes)
@@ -367,7 +368,7 @@ export const register: Register = on => {
             <Text dimColor>Sin datos todavía: llegan con la próxima respuesta de Claude.</Text>
           )}
           {p.limites.map(l => (
-            <Text>
+            <Text wrap="truncate-end">
               <Text>{nombreLimite(l.tipo).padEnd(8)}</Text>
               <Text color={colorUso(l.porcentaje)}>{barra(l.porcentaje, barraAncho)}</Text>
               <Text bold> {String(Math.round(l.porcentaje)).padStart(3)} %</Text>

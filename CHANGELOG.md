@@ -2,6 +2,12 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.5.1] - 2026-11-02
+
+### Cambiado
+
+- **arranque**: `nuevo-proyecto` acepta también un repo recién creado con un commit inicial o un README de plantilla (como el de «Crear nuevo proyecto» en Orca) y rehace el historial desde cero. Si se lanza en un worktree, para y pide hacerlo en la copia principal.
+
 ## [1.5.0] - 2026-11-02
 
 ### Añadido

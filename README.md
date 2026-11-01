@@ -6,7 +6,7 @@
 
 Tres plugins de Claude Code: uno arranca o adapta proyectos con el estándar, otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión, y un panel te enseña en todo momento qué hace cada agente y cuánto te queda de tu plan.
 
-![Versión](https://img.shields.io/badge/versión-1.5.0-2563eb?style=flat-square)
+![Versión](https://img.shields.io/badge/versión-1.5.1-2563eb?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude_Code-plugins-d97757?style=flat-square)
 ![Metodología](https://img.shields.io/badge/SDD_·_TDD-especificación_primero-16a34a?style=flat-square)
 ![Forjas](https://img.shields.io/badge/GitHub_·_GitLab-soportados-6b7280?style=flat-square)
@@ -310,9 +310,9 @@ Lo local se excluye en `.git/info/exclude`, así que no aparece en `git status` 
 
 **Proyecto nuevo**
 
-1. Crea la carpeta vacía con git: `mkdir ~/Projects/<nombre> && cd ~/Projects/<nombre> && git init -b main`.
-2. Añádela en Orca y abre una tarea con el agente **Claude**.
-3. Ejecuta `/arranque:nuevo-proyecto`: detecta el repo vacío y trabaja en él.
+1. En Orca: **Agregar proyecto → Crear nuevo proyecto**, dentro de `~/Projects`.
+2. Abre el agente **Claude** en la fila principal del proyecto (`main`), no en una tarea nueva: el proyecto se crea en la copia principal.
+3. Ejecuta `/arranque:nuevo-proyecto`: detecta el repo recién creado y trabaja en él.
 
 **Ajustes del repositorio en Orca** (una vez por proyecto)
 

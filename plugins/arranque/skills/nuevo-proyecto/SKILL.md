@@ -15,7 +15,7 @@ Actúa como arquitecto de software, senior del stack elegido e ingeniero de plat
 - Comandos del runtime con `mise exec -- <cmd>` o `mise run <tarea>`. La activación de mise no aplica en shells no interactivos.
 - Versiones siempre verificadas en vivo (`mise latest <tool>`, `npm view <pkg> version`, docs oficiales). Nunca de memoria.
 - Sin abstracciones especulativas: ni capas vacías, ni interfaces con una sola implementación, ni microservicios sin una razón medible.
-- Si el directorio destino existe y no está vacío, para y pregunta. Excepción: un repo git recién creado con solo `.git` y sin commits se usa tal cual.
+- Si el directorio destino existe y no está vacío, para y pregunta. Excepción: un repo recién creado (por ejemplo desde Orca) se usa tal cual si no tiene archivos fuera de `.git`, o solo un `README`/`.gitignore` vacío o de plantilla, y como mucho un commit inicial. Si estás en un worktree (`git rev-parse --git-dir` ≠ `--git-common-dir`), para: el proyecto se crea en la copia principal.
 - Comandos no interactivos (`--yes` o equivalentes). Un comando por llamada cuando dependa del anterior.
 - Commits en conventional commits, en español.
 - Autoría: nada en el repositorio menciona a Claude, IA ni herramientas de asistencia. Ni `Co-Authored-By`, ni enlaces de sesión, ni «Generated with», en commits, PR, código, comentarios o docs. `CLAUDE.md`, `AGENTS.md`, `.claude/` y `.worktreeinclude` existen solo en local, excluidos de git.
@@ -76,7 +76,7 @@ Con servicios locales, sigue [servicios.md](servicios.md) para comprobar o insta
 
 ### 2. Scaffold y runtimes
 
-Con la carpeta vacía, scaffold primero con versión explícita y sin git propio; después fija las herramientas. Si ya estás dentro de un repo vacío (solo `.git`, sin commits; por ejemplo el que se añade a Orca), trabaja en esa carpeta: sáltate el `mkdir` y el `git init`, y deja la rama en `main` con `git symbolic-ref HEAD refs/heads/main`.
+Con la carpeta vacía, scaffold primero con versión explícita y sin git propio; después fija las herramientas. Si ya estás dentro de un repo recién creado (ver reglas), trabaja en esa carpeta: sáltate el `mkdir` y el `git init`. Si tiene un commit inicial, bórralo para que el historial empiece con el tuyo (`git update-ref -d HEAD`, y elimina el README o `.gitignore` de plantilla si los hay). Deja la rama en `main` con `git symbolic-ref HEAD refs/heads/main`.
 
 ```bash
 mkdir -p ~/Projects/<nombre> && cd ~/Projects/<nombre>   # salvo repo vacío ya abierto

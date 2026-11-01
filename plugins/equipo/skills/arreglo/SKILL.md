@@ -28,9 +28,12 @@ Eres el jefe técnico del equipo ante un bug. Primero la causa raíz, después e
 
 ```bash
 git status --porcelain          # si no está vacío, para y pregunta
-git switch main && git pull --ff-only
-git switch -c fix/nombre-corto
+git fetch origin --prune
+test "$(git rev-parse --git-dir)" = "$(git rev-parse --git-common-dir)" && echo principal || echo worktree
 ```
+
+- **Copia principal:** `git switch main && git pull --ff-only && git switch -c fix/nombre-corto`.
+- **Worktree** (Orca, `claude --worktree`): no cambies a `main`. Si la rama actual no tiene commits propios (`git log origin/main..HEAD` vacío), `git reset --hard origin/main` y `git branch -m fix/nombre-corto`. Si ya tiene commits, para y pregunta.
 
 Consigue pasos exactos, entrada, resultado esperado y obtenido. Si faltan, pregunta al usuario. Reprodúcelo en local antes de seguir. Si no se reproduce, dilo y pide más datos: sin reproducción no hay arreglo.
 

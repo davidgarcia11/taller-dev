@@ -15,7 +15,7 @@ Actúa como arquitecto de software, senior del stack elegido e ingeniero de plat
 - Comandos del runtime con `mise exec -- <cmd>` o `mise run <tarea>`. La activación de mise no aplica en shells no interactivos.
 - Versiones siempre verificadas en vivo (`mise latest <tool>`, `npm view <pkg> version`, docs oficiales). Nunca de memoria.
 - Sin abstracciones especulativas: ni capas vacías, ni interfaces con una sola implementación, ni microservicios sin una razón medible.
-- Si el directorio destino existe y no está vacío, para y pregunta.
+- Si el directorio destino existe y no está vacío, para y pregunta. Excepción: un repo git recién creado con solo `.git` y sin commits se usa tal cual.
 - Comandos no interactivos (`--yes` o equivalentes). Un comando por llamada cuando dependa del anterior.
 - Commits en conventional commits, en español.
 - Autoría: nada en el repositorio menciona a Claude, IA ni herramientas de asistencia. Ni `Co-Authored-By`, ni enlaces de sesión, ni «Generated with», en commits, PR, código, comentarios o docs. `CLAUDE.md`, `AGENTS.md`, `.claude/` y `.worktreeinclude` existen solo en local, excluidos de git.
@@ -64,7 +64,7 @@ git config user.name && git config user.email
 gh auth status        # GitLab: glab auth status
 ```
 
-Si falta algo, para y dilo. Ruta por defecto: `~/Projects/<nombre>`.
+Si falta algo, para y dilo. Ruta por defecto: `~/Projects/<nombre>`, o la carpeta actual si es un repo vacío.
 
 Si `jq '.attribution' ~/.claude/settings.json` no devuelve `commit: ""`, `pr: ""` y `sessionUrl: false`, aplícalo (el usuario lo pidió para siempre):
 
@@ -76,10 +76,10 @@ Con servicios locales, sigue [servicios.md](servicios.md) para comprobar o insta
 
 ### 2. Scaffold y runtimes
 
-Con la carpeta vacía, scaffold primero con versión explícita y sin git propio; después fija las herramientas:
+Con la carpeta vacía, scaffold primero con versión explícita y sin git propio; después fija las herramientas. Si ya estás dentro de un repo vacío (solo `.git`, sin commits; por ejemplo el que se añade a Orca), trabaja en esa carpeta: sáltate el `mkdir` y el `git init`, y deja la rama en `main` con `git symbolic-ref HEAD refs/heads/main`.
 
 ```bash
-mkdir -p ~/Projects/<nombre> && cd ~/Projects/<nombre>
+mkdir -p ~/Projects/<nombre> && cd ~/Projects/<nombre>   # salvo repo vacío ya abierto
 mise exec <tool>@<versión> -- <comando de scaffold>
 mise use --pin <tool>@<versión>      # una vez por herramienta del plan
 mise use --pin gitleaks@latest
@@ -169,6 +169,8 @@ GitHub:
 gh repo create <nombre> --private --source=. --remote=origin --push
 ```
 
+Si ya existe `origin` (repo creado antes, por ejemplo para Orca): `git push -u origin main` y no crees otro.
+
 GitLab:
 
 ```bash
@@ -189,3 +191,5 @@ GitHub: activa las alertas y actualizaciones de seguridad de Dependabot con los 
 ### 10. Cierre
 
 Resume en 8 líneas como máximo: ruta, stack, URL del repo y comandos (`mise run setup`, `mise run check`). Termina con: «Abre una sesión nueva en la carpeta del proyecto (o usa `/cd <ruta>`) para cargar su CLAUDE.md, permisos, hooks y el equipo. Para la primera funcionalidad: `/equipo:funcionalidad`.»
+
+Añade siempre: «Si usas Orca: en Ajustes → Repositorio pon como rama base `origin/main` y como hook de preparación `mise trust && mise install && mise run setup`. Cada worktree nuevo copia `CLAUDE.md`, `.claude/` y `.env` gracias a `.worktreeinclude`.»

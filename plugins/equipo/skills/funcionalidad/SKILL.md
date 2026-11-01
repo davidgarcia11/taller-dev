@@ -36,12 +36,15 @@ Crea estas tareas con TaskCreate y márcalas al avanzar:
 
 ```bash
 git status --porcelain          # si no está vacío, para y pregunta
-git switch main && git pull --ff-only
+git fetch origin --prune
+test "$(git rev-parse --git-dir)" = "$(git rev-parse --git-common-dir)" && echo principal || echo worktree
 ls docs/specs/
+git branch -a --list '*feat/[0-9][0-9][0-9]-*'
 ```
 
-- `NNN`: siguiente número de tres cifras en `docs/specs/`. `nombre-corto`: 2-4 palabras en kebab-case.
-- `git switch -c feat/NNN-nombre-corto`.
+- `NNN`: siguiente número de tres cifras tras el mayor entre `docs/specs/` y las ramas `feat/NNN-*` locales y remotas. Así dos worktrees en paralelo no repiten número. `nombre-corto`: 2-4 palabras en kebab-case.
+- **Copia principal:** `git switch main && git pull --ff-only && git switch -c feat/NNN-nombre-corto`.
+- **Worktree** (Orca, `claude --worktree`): `main` está ocupada por la copia principal, no cambies a ella. Si la rama actual no tiene commits propios (`git log origin/main..HEAD` vacío), `git reset --hard origin/main` y `git branch -m feat/NNN-nombre-corto`. Si ya tiene commits, para y pregunta.
 - **Modo.** Propón el modo ligero solo si se cumple todo: sin cambios en el modelo de datos, sin dependencias nuevas, sin tocar autenticación, permisos, pagos ni datos personales, sin cambiar contratos públicos y unas 3 tareas como máximo. En otro caso, completo. El usuario confirma.
 
 | | Completo | Ligero |

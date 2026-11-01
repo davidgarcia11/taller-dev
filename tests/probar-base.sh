@@ -30,6 +30,7 @@ comprueba "configura core.hooksPath" "[ \"\$(git config core.hooksPath)\" = .git
 comprueba "crea CI, docs, compose, runbook y cliff.toml" "[ -f .github/workflows/ci.yml ] && [ -f docs/ARCHITECTURE.md ] && [ -f compose.yaml ] && [ -f docs/RUNBOOK.md ] && [ -f cliff.toml ]"
 comprueba "crea las reglas por zona" "[ -f .claude/rules/tests.md ] && [ -f .claude/rules/seguridad.md ] && grep -q '^paths:' .claude/rules/api.md"
 comprueba "excluye los archivos del asistente" "git check-ignore -q CLAUDE.md && git check-ignore -q .claude/settings.json && git check-ignore -q .claude/rules/tests.md && git check-ignore -q .worktreeinclude"
+comprueba "copia skills y reglas a los worktrees" "grep -qxF .claude/skills/ .worktreeinclude && grep -qxF .claude/rules/ .worktreeinclude && grep -qxF CLAUDE.md .worktreeinclude"
 comprueba "no muestra archivos del asistente en git status" "! git status --porcelain | grep -qiE 'claude|worktreeinclude'"
 "$raiz/plugins/arranque/bin/taller-base" --forja github > "$tmp/salida2.txt"
 comprueba "es idempotente" "! grep -q Creados \"$tmp/salida2.txt\" && [ \"\$(grep -cxF CLAUDE.md .git/info/exclude)\" = 1 ]"

@@ -6,7 +6,7 @@
 
 Tres plugins de Claude Code: uno arranca o adapta proyectos con el estándar, otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión, y un panel te enseña en todo momento qué hace cada agente y cuánto te queda de tu plan.
 
-![Versión](https://img.shields.io/badge/versión-1.4.1-2563eb?style=flat-square)
+![Versión](https://img.shields.io/badge/versión-1.5.0-2563eb?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude_Code-plugins-d97757?style=flat-square)
 ![Metodología](https://img.shields.io/badge/SDD_·_TDD-especificación_primero-16a34a?style=flat-square)
 ![Forjas](https://img.shields.io/badge/GitHub_·_GitLab-soportados-6b7280?style=flat-square)
@@ -303,6 +303,32 @@ mi-proyecto/
 ```
 
 Lo local se excluye en `.git/info/exclude`, así que no aparece en `git status` ni llega nunca al repositorio. Los worktrees que crea Claude Code reciben esos archivos gracias a `.worktreeinclude`.
+
+## 🌳 Con Orca
+
+[Orca](https://www.onorca.dev) abre cada tarea en un worktree propio con su agente. Los plugins funcionan igual porque Orca usa tu `~/.claude`.
+
+**Proyecto nuevo**
+
+1. Crea la carpeta vacía con git: `mkdir ~/Projects/<nombre> && cd ~/Projects/<nombre> && git init -b main`.
+2. Añádela en Orca y abre una tarea con el agente **Claude**.
+3. Ejecuta `/arranque:nuevo-proyecto`: detecta el repo vacío y trabaja en él.
+
+**Ajustes del repositorio en Orca** (una vez por proyecto)
+
+| Ajuste | Valor |
+|---|---|
+| Rama base | `origin/main` |
+| Hook de preparación | `mise trust && mise install && mise run setup` |
+| Agente | Claude (no Agent Teams) |
+| Modo Yolo | desactivado |
+
+**Cómo se adapta el flujo**
+
+- Cada worktree recibe `CLAUDE.md`, `.claude/` y `.env` gracias a `.worktreeinclude`.
+- Dentro de un worktree, `/equipo:funcionalidad` y `/equipo:arreglo` no cambian a `main`: renombran la rama del worktree a `feat/NNN-…` o `fix/…` sobre `origin/main`.
+- El número de especificación mira también las ramas de los demás worktrees, así que dos funcionalidades en paralelo no chocan.
+- El merge lo sigues haciendo tú desde la PR.
 
 ## 🔧 Mantenimiento
 

@@ -2,6 +2,20 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.5.0] - 2026-11-02
+
+### Añadido
+
+- **arranque**: `nuevo-proyecto` acepta un repo git vacío ya creado (el que se añade a Orca) y no crea otra carpeta ni otro repositorio.
+- **arranque**: el cierre de `nuevo-proyecto` y `adaptar-proyecto` recuerda la configuración de Orca (rama base y hook de preparación).
+- **arranque**: `.worktreeinclude` copia también `.claude/skills/` a los worktrees.
+- **README**: sección para trabajar con Orca.
+
+### Cambiado
+
+- **equipo**: `funcionalidad` y `arreglo` detectan si están en un worktree; ahí renombran la rama actual sobre `origin/main` en lugar de cambiar a `main`.
+- **equipo**: el número de especificación se calcula con `docs/specs/` y con las ramas `feat/NNN-*` locales y remotas, para que los worktrees en paralelo no repitan número.
+
 ## [1.4.1] - 2026-11-02
 
 ### Corregido

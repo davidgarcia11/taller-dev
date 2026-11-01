@@ -83,3 +83,5 @@ Antes de nada: secretos rotados, copia completa (`git clone --mirror`) y aviso a
 ## Cierre
 
 Resume en 8 líneas como máximo: qué tenía, qué cambia, URL de la PR, deuda pendiente y riesgos abiertos. Termina con: «Tras hacer el merge, abre una sesión nueva en el proyecto para cargar su CLAUDE.md, permisos, hooks y el equipo.»
+
+Añade siempre: «Si usas Orca: en Ajustes → Repositorio pon como rama base `origin/main` y como hook de preparación `mise trust && mise install && mise run setup`. Cada worktree nuevo copia `CLAUDE.md`, `.claude/` y `.env` gracias a `.worktreeinclude`.»

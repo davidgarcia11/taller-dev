@@ -6,7 +6,7 @@
 
 Tres plugins de Claude Code: uno arranca o adapta proyectos con el estándar, otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión, y un panel te enseña en todo momento qué hace cada agente y cuánto te queda de tu plan.
 
-![Versión](https://img.shields.io/badge/versión-1.7.0-2563eb?style=flat-square)
+![Versión](https://img.shields.io/badge/versión-1.8.0-2563eb?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude_Code-plugins-d97757?style=flat-square)
 ![Metodología](https://img.shields.io/badge/SDD_·_TDD-especificación_primero-16a34a?style=flat-square)
 ![Forjas](https://img.shields.io/badge/GitHub_·_GitLab-soportados-6b7280?style=flat-square)
@@ -30,6 +30,7 @@ Activo en todo el Mac. Prepara proyectos.
 
 - **`/arranque:nuevo-proyecto`**: descubrimiento, plan de stack y arquitectura que apruebas tú, y proyecto creado con todo en su sitio.
 - **`/arranque:adaptar-proyecto`**: diagnóstico de un proyecto existente y PR que lo lleva al estándar sin romper nada.
+- **`/arranque:actualizar-proyecto`**: lleva a un proyecto que ya sigue el estándar las novedades de las plantillas, solo lo que falta y con tu aprobación.
 
 </td>
 <td width="33%" valign="top">
@@ -348,6 +349,8 @@ claude plugin update equipo@taller-dev
 claude plugin update panel@taller-dev
 ```
 
+4. En cada proyecto, si la versión trae plantillas nuevas (lo dice el CHANGELOG), ejecuta `/arranque:actualizar-proyecto`. El comportamiento del equipo se actualiza solo; las reglas, hooks y documentos del proyecto, con este comando.
+
 ### Desinstalar
 
 ```bash
@@ -375,7 +378,7 @@ taller-dev/
 │   ├── arranque/
 │   │   ├── bin/taller-base             Aplica la base sin sobrescribir nada
 │   │   ├── plantillas/                 Hooks, CI, docs, runbook, CHANGELOG, CLAUDE.md, settings, compose y tareas
-│   │   └── skills/                     nuevo-proyecto (+ stack, arquitectura, seguridad) · adaptar-proyecto
+│   │   └── skills/                     nuevo-proyecto (+ stack, arquitectura, seguridad) · adaptar-proyecto · actualizar-proyecto
 │   ├── equipo/
 │   │   ├── agents/                     desarrollador · revisor · qa · cazabugs · seguridad
 │   │   ├── plantillas/                 spec.md · plan.md · tasks.md

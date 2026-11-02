@@ -6,5 +6,6 @@ Crea proyectos nuevos o adapta los existentes al estándar del taller: plan de s
 |---|---|
 | `/arranque:nuevo-proyecto` | Proyecto nuevo desde cero |
 | `/arranque:adaptar-proyecto` | Proyecto existente, en una rama con PR |
+| `/arranque:actualizar-proyecto` | Proyecto que ya sigue el estándar: añade las novedades de las plantillas |
 
 `bin/taller-base` aplica las plantillas sin sobrescribir nada. Documentación completa en el [README del repositorio](../../README.md).

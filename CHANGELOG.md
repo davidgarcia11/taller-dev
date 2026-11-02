@@ -2,6 +2,13 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.8.0] - 2026-11-03
+
+### Añadido
+
+- **arranque**: `/arranque:actualizar-proyecto` compara un proyecto con la última versión de las plantillas y propone solo lo que falta (reglas, permisos, hooks, CI, documentos base, tareas de mise). Nunca borra ni sustituye lo que el proyecto ya tiene; lo local se aplica directamente y lo del repositorio va en una PR.
+- **arranque**: incluye las plantillas de la 1.7.0 (test en rojo y base de tests en la regla de tests).
+
 ## [1.7.0] - 2026-11-02
 
 ### Añadido

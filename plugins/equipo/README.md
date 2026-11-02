@@ -1,6 +1,6 @@
 # equipo
 
-Equipo de desarrollo por funcionalidad con especificación previa: la sesión principal especifica y planifica contigo, un desarrollador trabaja con tests primero y cuatro auditores independientes (revisión de código, control de calidad, caza de bugs y seguridad) antes de abrir la PR.
+Equipo de desarrollo por funcionalidad con especificación previa: la sesión principal especifica y planifica contigo, un desarrollador trabaja con tests primero y auditores independientes (revisión de código y control de calidad siempre; caza de bugs y seguridad según el riesgo) antes de abrir la PR.
 
 | Skill | Uso |
 |---|---|

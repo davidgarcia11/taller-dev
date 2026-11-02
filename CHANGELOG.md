@@ -2,6 +2,13 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.6.0] - 2026-11-02
+
+### Cambiado
+
+- **equipo**: en modo completo, los auditores se eligen según el riesgo del cambio. QA y revisor siempre; seguridad si toca accesos, datos personales, pagos, secretos, dependencias o entradas de usuario; cazabugs si hay estados, cálculos, concurrencia, integraciones o migraciones. El usuario ve la elección antes y puede añadir auditores.
+- **equipo**: revisor y cazabugs pasan a Sonnet. Seguridad sigue en Opus.
+
 ## [1.5.1] - 2026-11-02
 
 ### Cambiado

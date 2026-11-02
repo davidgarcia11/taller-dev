@@ -6,7 +6,7 @@
 
 Tres plugins de Claude Code: uno arranca o adapta proyectos con el estándar, otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión, y un panel te enseña en todo momento qué hace cada agente y cuánto te queda de tu plan.
 
-![Versión](https://img.shields.io/badge/versión-1.5.1-2563eb?style=flat-square)
+![Versión](https://img.shields.io/badge/versión-1.6.0-2563eb?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude_Code-plugins-d97757?style=flat-square)
 ![Metodología](https://img.shields.io/badge/SDD_·_TDD-especificación_primero-16a34a?style=flat-square)
 ![Forjas](https://img.shields.io/badge/GitHub_·_GitLab-soportados-6b7280?style=flat-square)
@@ -38,7 +38,7 @@ Activo en todo el Mac. Prepara proyectos.
 
 Activo solo en tus proyectos. Hace el trabajo.
 
-- **`/equipo:funcionalidad`**: especificación, plan, desarrollo con tests y cuatro auditorías antes de abrir la PR.
+- **`/equipo:funcionalidad`**: especificación, plan, desarrollo con tests y auditorías según el riesgo de cada cambio antes de abrir la PR.
 - **`/equipo:arreglo`**: causa raíz, test que reproduce el bug, corrección mínima y auditorías proporcionales.
 
 </td>
@@ -75,10 +75,10 @@ flowchart TD
 
     subgraph G [🔍 Auditorías en paralelo]
         direction LR
-        G1[Revisor<br/><sub>Opus</sub>]
-        G2[QA<br/><sub>Sonnet</sub>]
-        G3[Cazabugs<br/><sub>Opus</sub>]
-        G4[Seguridad<br/><sub>Opus</sub>]
+        G1[Revisor<br/><sub>Sonnet · siempre</sub>]
+        G2[QA<br/><sub>Sonnet · siempre</sub>]
+        G3[Cazabugs<br/><sub>Sonnet · si hay lógica delicada</sub>]
+        G4[Seguridad<br/><sub>Opus · si toca datos o accesos</sub>]
     end
 
     G --> H{¿Hallazgos<br/>bloqueantes?}
@@ -180,12 +180,14 @@ La primera petición arranca `/equipo:funcionalidad` y la segunda `/equipo:arreg
 |---|:---:|---|:---:|
 | 🧭 **jefe técnico** (sesión principal) | Opus | Especifica contigo, planifica con la skill `diseno-tecnico`, coordina a los agentes y abre la PR | Solo documentos |
 | ⌨️ **desarrollador** | Sonnet | Implementa con tests primero, un commit por tarea, y corrige los hallazgos | ✅ |
-| 🔎 **revisor** | Opus | Código limpio, duplicación, simplicidad, tests y cumplimiento del plan | ❌ |
+| 🔎 **revisor** | Sonnet | Código limpio, duplicación, simplicidad, tests y cumplimiento del plan | ❌ |
 | 🧪 **qa** | Sonnet | Check completo, matriz de criterios, cobertura de lo cambiado, tests intermitentes, build y migraciones | ❌ |
-| 🐛 **cazabugs** | Opus | Límites, entradas inválidas, estados, concurrencia y fallos externos; cada bug con su test | ❌ |
+| 🐛 **cazabugs** | Sonnet | Límites, entradas inválidas, estados, concurrencia y fallos externos; cada bug con su test | ❌ |
 | 🛡️ **seguridad** | Opus | OWASP Top 10 2025, ASVS, secretos, dependencias y RGPD | ❌ |
 
-**Por qué estos modelos.** Opus donde hay que razonar: diseñar, juzgar calidad e imaginar cómo se rompe o se ataca algo. Sonnet donde las instrucciones ya son precisas: implementar tareas y ejecutar comprobaciones.
+**Por qué estos modelos.** Opus donde un fallo de criterio sale caro: diseñar la funcionalidad y pensar como un atacante. Sonnet donde el método está escrito en su skill: implementar, revisar el código, buscar bugs con casos límite y ejecutar comprobaciones.
+
+**Qué auditores entran.** QA y revisor, siempre. Seguridad, si el cambio toca accesos, datos personales, pagos, secretos, dependencias o entradas de usuario. Cazabugs, si hay estados, cálculos, concurrencia, integraciones o migraciones. Antes de lanzarlos te dice cuáles van y por qué, y puedes pedir los que falten. Así una pantalla sencilla no gasta lo mismo que un pago.
 
 **Por qué el plan lo hace la sesión principal.** Es quien ha hablado contigo y conoce los matices de la especificación. Un agente aparte empezaría solo con `spec.md`. El plan se escribe para que baste por sí solo, porque el desarrollador trabaja únicamente con los documentos.
 
@@ -220,20 +222,20 @@ Semana  ███░░░░░░░░░░░░░░  21 %  se renueva en
 AHORA
 ● desarrollador  Sonnet · edita partes.ts
 ● qa             Sonnet · ejecuta mise run check
-✓ revisor        Opus · terminado
+✓ seguridad      Opus · terminado
 
 CONSUMO DE LA SESIÓN
                   Modelo    Entrada   Salida     API $
 sesión principal  Opus       1,24 M   38,2 k    4,10 $
 desarrollador     Sonnet     2,06 M   51,7 k    2,92 $
-revisor           Opus       0,41 M   12,9 k    1,62 $
+seguridad         Opus       0,41 M   12,9 k    1,62 $
 Total                        4,98 M  131,4 k   10,80 $
 Este mes en Claude Code: 143,20 $ · mes anterior: 98,10 $
 
 RESUMEN                [ Redactar con Haiku ]
 12:03  Tú: añade la firma de partes desde el móvil
 12:20  Lanza desarrollador: Implementa T1-T3
-12:41  revisor termina (4 min) · CAMBIOS NECESARIOS
+12:41  seguridad termina (4 min) · CAMBIOS NECESARIOS
 12:58  PR abierta: https://github.com/…/pull/14
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "panel",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Panel visual de la sesión: uso del plan, qué hace cada agente, tokens y coste por agente, historial mensual y resumen.",
   "author": {
     "name": "David Garcia"

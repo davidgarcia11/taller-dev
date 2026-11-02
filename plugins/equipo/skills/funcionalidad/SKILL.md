@@ -52,7 +52,7 @@ git branch -a --list '*feat/[0-9][0-9][0-9]-*'
 | Especificación | completa | problema, objetivo, criterios y fuera de alcance |
 | Plan | tú, con el método completo de `diseno-tecnico` | tú, breve |
 | Aprobaciones | especificación y plan por separado | una sola, conjunta |
-| Auditorías | revisor, QA, cazabugs y seguridad | QA (y seguridad si toca entradas o datos) |
+| Auditorías | revisor y QA, más seguridad y cazabugs según riesgo (paso 5) | QA (y seguridad si toca entradas o datos) |
 
 ## 2. Especificación
 
@@ -84,7 +84,18 @@ Tras cada bloque comprueba tú: `git log --oneline main..HEAD`, tareas marcadas 
 
 ## 5. Auditorías
 
-Lanza los auditores del modo **en paralelo, en un solo mensaje**, con el mismo encargo:
+En modo completo, elige los auditores mirando la especificación, el plan y el diff (`git diff --stat main...HEAD`):
+
+| Auditor | Cuándo |
+|---|---|
+| `equipo:qa` | Siempre |
+| `equipo:revisor` | Siempre |
+| `equipo:seguridad` | Si toca autenticación, sesiones, permisos, datos personales, pagos, secretos o configuración, dependencias nuevas, subida de archivos, servicios externos, o entradas de usuario nuevas que llegan a base de datos, HTML, shell o archivos. En caso de duda, lánzalo |
+| `equipo:cazabugs` | Si hay reglas de negocio con estados, cálculos (importes, fechas, zonas horarias), concurrencia o tareas asíncronas, integraciones externas, migraciones de datos o parseo de formatos |
+
+Antes de lanzarlos, di al usuario en una línea cuáles van y por qué los que no; si pide alguno más, añádelo.
+
+Lanza los auditores elegidos **en paralelo, en un solo mensaje**, con el mismo encargo:
 
 > Rama `feat/NNN-nombre-corto`, comparada con `main`. Especificación: `docs/specs/NNN-nombre-corto/spec.md`. Plan: `docs/specs/NNN-nombre-corto/plan.md`. Audita según tu skill y devuelve el informe en su formato.
 
@@ -114,7 +125,7 @@ mise run check
 git push -u origin feat/NNN-nombre-corto
 ```
 
-Escribe el cuerpo fuera del repositorio siguiendo la plantilla de PR del proyecto: qué cambia, por qué (enlace a la especificación), cómo probarlo, comprobaciones marcadas, resultado de la revisión de código, el control de calidad, las pruebas de robustez y la revisión de seguridad, y pendientes con su motivo.
+Escribe el cuerpo fuera del repositorio siguiendo la plantilla de PR del proyecto: qué cambia, por qué (enlace a la especificación), cómo probarlo, comprobaciones marcadas, resultado de la revisión de código, el control de calidad, las pruebas de robustez y la revisión de seguridad (las que no se hicieron, con su motivo), y pendientes con su motivo.
 
 ```bash
 gh pr create --title "feat(ámbito): descripción" --body-file <archivo>

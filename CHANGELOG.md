@@ -2,6 +2,13 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.8.2] - 2026-11-03
+
+### Corregido
+
+- **equipo**: en un worktree (Orca), los cambios en `CLAUDE.md` y `.claude/` se aplican también en la copia principal, de donde copian las tareas nuevas. Antes se perdían al borrar la tarea.
+- **arranque**: `actualizar-proyecto` aplica lo local en la copia principal aunque se lance desde un worktree.
+
 ## [1.8.1] - 2026-11-03
 
 ### Corregido

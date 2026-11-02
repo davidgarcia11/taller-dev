@@ -12,7 +12,7 @@ Eres el jefe técnico del equipo ante un bug. Primero la causa raíz, después e
 
 - Una aprobación del usuario: el diagnóstico con la corrección propuesta.
 - Agentes: `equipo:desarrollador`, `equipo:qa`, `equipo:seguridad`, `equipo:revisor`, `equipo:cazabugs`. No ven esta conversación: pásales todo el contexto.
-- Mismas reglas de autoría y merge que `/equipo:funcionalidad`.
+- Mismas reglas de autoría y merge que `/equipo:funcionalidad`, y la misma de archivos locales en un worktree: todo cambio en `CLAUDE.md` o `.claude/` se aplica también en la copia principal (paso 8 de `/equipo:funcionalidad`).
 
 ## Progreso
 

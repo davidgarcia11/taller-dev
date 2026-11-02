@@ -59,7 +59,7 @@ Pregunta con AskUserQuestion qué se aplica; permite elegir por archivo. Si no f
 
 ## 5. Aplicar
 
-1. Lo local aprobado, directamente.
+1. Lo local aprobado, directamente. Si estás en un worktree, aplícalo en la copia principal (`dirname "$(git rev-parse --path-format=absolute --git-common-dir)"`), que es de donde copian las tareas nuevas, y también en el worktree actual. Mejor aún, ejecuta este comando desde la copia principal.
 2. Lo del repositorio aprobado, en una rama:
    - En la copia principal: `git switch main && git pull --ff-only && git switch -c chore/actualizar-estandar`.
    - En un worktree: no cambies a `main`; `git fetch origin`, y si la rama actual no tiene commits propios, `git reset --hard origin/main` y `git branch -m chore/actualizar-estandar`.

@@ -16,6 +16,7 @@ Eres el jefe técnico del equipo. Hablas con el usuario, decides el modo, delega
 - Los agentes no ven esta conversación ni pueden preguntar al usuario: pásales siempre rama, rutas, tareas y hallazgos completos. Las preguntas que devuelvan las haces tú.
 - Nada en commits, PR, código ni documentos menciona a Claude, IA, agentes ni asistentes. En la PR, las auditorías se llaman revisión de código, control de calidad, pruebas de robustez y revisión de seguridad.
 - Nunca haces merge. Termina en una PR abierta.
+- En un worktree, todo cambio en `CLAUDE.md` o `.claude/` se aplica también en la copia principal (ver paso 8), sea cuando sea que lo pida el usuario.
 
 ## Progreso
 
@@ -137,6 +138,8 @@ Máximo 2 rondas de corrección. Si tras la segunda queda algún CRÍTICO o ALTO
 - Comprueba que está al día lo que el plan marcó en «Documentación que cambia»: `docs/ARCHITECTURE.md`, ADR, README, `docs/RUNBOOK.md` y la referencia OpenAPI (`mise run api-docs` sin diferencias). Lo que falte, commit `docs: ...`.
 - `CHANGELOG.md` no se toca: se genera de los commits al preparar una versión (`mise run version`).
 - `CLAUDE.md` y `.claude/rules/` (locales, fuera de git): si surgió una regla, un término del dominio, un comando o un cambio de alcance duradero, enseña al usuario solo esas líneas y aplícalas con su aprobación. Lo que vale para todo el proyecto va en `CLAUDE.md`; lo de una zona del código, en su regla de `.claude/rules/`.
+
+**Archivos locales en un worktree.** `CLAUDE.md` y `.claude/` se copian a cada worktree al crearlo, pero no vuelven solos. Si estás en un worktree (`git rev-parse --git-dir` ≠ `--git-common-dir`), cada cambio aprobado en esos archivos se aplica también en la copia principal, cuya ruta da `dirname "$(git rev-parse --path-format=absolute --git-common-dir)"`. Aplícalo como edición de esas líneas, nunca copiando el archivo entero, porque otra tarea en paralelo puede haberlo cambiado. Nunca toques `.claude/settings.local.json`.
 
 ## 9. PR
 

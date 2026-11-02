@@ -2,6 +2,12 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.8.1] - 2026-11-03
+
+### Corregido
+
+- **arranque**: los proyectos con base de datos tienen una base de tests separada (`<base>_test`), creada por un script de inicio de Postgres. Los tests la usan siempre y nunca tocan la de desarrollo. `actualizar-proyecto` lo propone en los proyectos que no la tienen.
+
 ## [1.8.0] - 2026-11-03
 
 ### Añadido

@@ -103,6 +103,7 @@ Copia sin sobrescribir: hooks de git (secretos y formato de commits), `cliff.tom
 
 - `mise.toml`: añade las tareas de `${CLAUDE_PLUGIN_ROOT}/plantillas/tareas/<stack>.toml` más `version.toml` (y `servicios.toml` si hay contenedores), adaptadas al proyecto. `check` debe incluir lint, formato, tipos, tests, build, `gitleaks` y `osv-scanner`.
 - Herramientas de lint, formato y test del stack como dependencias de desarrollo, con su configuración.
+- Con base de datos: los tests usan siempre la base `<POSTGRES_DB>_test`, que crea `docker/postgres/crear-bd-tests.sh`, mediante su propia variable (`DATABASE_URL_TEST` en `.env.example`) y con las migraciones aplicadas antes de ejecutarlos. Nunca la de desarrollo. En CI, el servicio de base de datos hace de base de tests.
 - Documentación de la API pública exigida por el linter cuando el stack lo permita sin ruido (por ejemplo, reglas `D` de ruff con convención Google, `revive` con `exported` en Go).
 - Con API: OpenAPI generado desde el código, nunca escrito a mano (FastAPI nativo, `@fastify/swagger` o `hono-openapi` con zod, springdoc-openapi, huma en Go), servido en desarrollo y exportado a `docs/api/openapi.json` con una tarea `mise run api-docs`; `check` falla si el exportado no coincide con el código.
 - `CLAUDE.md`, `docs/ARCHITECTURE.md`, `docs/adr/0001-stack-y-arquitectura.md` y, con despliegue, `docs/RUNBOOK.md` con el plan aprobado. Borra las secciones que no apliquen.

@@ -44,6 +44,8 @@ Recorre cada archivo de `$ref` (sin `.git/`) frente al del proyecto:
 | `mise.toml` | Tareas de la referencia que no existan; sin tocar las versiones fijadas |
 | `.worktreeinclude`, `.gitignore`, `.git/info/exclude` | Líneas que falten |
 
+Si el proyecto tiene base de datos y sus tests usan la de desarrollo, propón la base de tests separada: el script de `docker/postgres/`, el montaje en `compose.yaml`, la variable de los tests y la creación manual de la base en el volumen existente (`docker compose exec db createdb -U <usuario> <base>_test`), porque el script solo se ejecuta con un volumen nuevo.
+
 Comprueba además que `git config core.hooksPath` es `.githooks` y que ningún archivo del asistente está en git (`git ls-files | grep -iE 'claude|agents\.md|worktreeinclude'`).
 
 ## 4. Proponer

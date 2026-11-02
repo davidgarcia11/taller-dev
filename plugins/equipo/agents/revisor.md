@@ -2,6 +2,7 @@
 name: revisor
 description: Revisa calidad, reutilización, simplicidad, tests y cumplimiento del plan. Solo informa. Fase de auditoría.
 model: sonnet
+effort: medium
 tools: Read, Grep, Glob, Bash
 skills:
   - revision-codigo

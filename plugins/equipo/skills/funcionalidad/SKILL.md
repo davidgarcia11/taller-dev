@@ -26,10 +26,11 @@ Crea estas tareas con TaskCreate y márcalas al avanzar:
 2. Especificación aprobada
 3. Plan aprobado
 4. Desarrollo
-5. Auditorías
-6. Correcciones
-7. Documentación y CLAUDE.md
-8. PR abierta
+5. Comprobación de los tests
+6. Auditorías
+7. Correcciones
+8. Documentación y CLAUDE.md
+9. PR abierta
 ```
 
 ## 1. Preparar
@@ -52,7 +53,7 @@ git branch -a --list '*feat/[0-9][0-9][0-9]-*'
 | Especificación | completa | problema, objetivo, criterios y fuera de alcance |
 | Plan | tú, con el método completo de `diseno-tecnico` | tú, breve |
 | Aprobaciones | especificación y plan por separado | una sola, conjunta |
-| Auditorías | revisor y QA, más seguridad y cazabugs según riesgo (paso 5) | QA (y seguridad si toca entradas o datos) |
+| Auditorías | revisor y QA, más seguridad y cazabugs según riesgo (paso 6) | QA (y seguridad si toca entradas o datos) |
 
 ## 2. Especificación
 
@@ -81,9 +82,22 @@ Lanza `equipo:desarrollador` por bloques de hasta 5 tareas:
 
 > Rama `feat/NNN-nombre-corto`. Implementa las tareas T1-T5 de `docs/specs/NNN-nombre-corto/tasks.md` según `spec.md` y `plan.md`. Un commit por tarea con su test.
 
-Tras cada bloque comprueba tú: `git log --oneline main..HEAD`, tareas marcadas en `tasks.md` y `mise run check` en verde. Si el desarrollador informa de un bloqueo de diseño, llévalo al usuario.
+Tras cada bloque comprueba tú: `git log --oneline main..HEAD`, tareas marcadas en `tasks.md`, `mise run check` en verde y que el informe trae, por tarea, el motivo del fallo en rojo. Anota las tareas «sin rojo» para el paso siguiente. Lleva al usuario los bloqueos de diseño y las desviaciones del plan que cambien configuración, dependencias o comportamiento; las demás, resúmelas al final del bloque.
 
-## 5. Auditorías
+Mientras un agente trabaja en la carpeta, no edites código ni ejecutes pruebas que lo modifiquen. Si el usuario te pide algo así, hazlo cuando el agente termine.
+
+## 5. Comprobación de los tests
+
+Un test que nunca se ha visto fallar puede no comprobar nada. Con ningún agente trabajando, rompe a propósito lo más importante y confirma que algún test falla:
+
+- Qué romper: las tareas «sin rojo», cada amenaza del plan y las reglas críticas (permisos, importes, restricciones de datos, validaciones). Entre 5 y 15 cambios; en modo ligero, solo las tareas «sin rojo».
+- Cómo: un cambio cada vez (invertir una condición, quitar una comprobación, una restricción o un filtro), ejecuta solo los tests de ese archivo contra la base de tests, y deshazlo con `git checkout -- <archivo>`. Las restricciones de base de datos, con una migración temporal en la base de tests, nunca en la de desarrollo.
+- Al terminar: `git status` limpio y `mise run check` en verde.
+- Si un cambio no hace fallar ningún test, lanza `equipo:desarrollador` para añadir el test que falta y vuelve a comprobarlo.
+
+Resume al usuario en tres líneas qué se rompió y qué faltaba.
+
+## 6. Auditorías
 
 En modo completo, elige los auditores mirando la especificación, el plan y el diff (`git diff --stat main...HEAD`):
 
@@ -102,7 +116,7 @@ Lanza los auditores elegidos **en paralelo, en un solo mensaje**, con el mismo e
 
 Consolida los informes: une duplicados, conserva el texto completo de cada hallazgo (con el test propuesto si lo hay) y clasifícalos por gravedad.
 
-## 6. Correcciones
+## 7. Correcciones
 
 - CRÍTICO y ALTO: siempre se corrigen.
 - MEDIO: se corrigen salvo que sean muchos o costosos; en ese caso pregunta al usuario cuáles aplazar.
@@ -117,14 +131,14 @@ Verificación:
 
 Máximo 2 rondas de corrección. Si tras la segunda queda algún CRÍTICO o ALTO, para y presenta al usuario cada hallazgo con su coste estimado para que decida qué se corrige ya y qué va a pendientes.
 
-## 7. Documentación y CLAUDE.md
+## 8. Documentación y CLAUDE.md
 
 - `spec.md`: `Estado: Implementada`. Si el alcance cambió durante el desarrollo, la especificación refleja lo construido.
 - Comprueba que está al día lo que el plan marcó en «Documentación que cambia»: `docs/ARCHITECTURE.md`, ADR, README, `docs/RUNBOOK.md` y la referencia OpenAPI (`mise run api-docs` sin diferencias). Lo que falte, commit `docs: ...`.
 - `CHANGELOG.md` no se toca: se genera de los commits al preparar una versión (`mise run version`).
 - `CLAUDE.md` y `.claude/rules/` (locales, fuera de git): si surgió una regla, un término del dominio, un comando o un cambio de alcance duradero, enseña al usuario solo esas líneas y aplícalas con su aprobación. Lo que vale para todo el proyecto va en `CLAUDE.md`; lo de una zona del código, en su regla de `.claude/rules/`.
 
-## 8. PR
+## 9. PR
 
 ```bash
 mise run check

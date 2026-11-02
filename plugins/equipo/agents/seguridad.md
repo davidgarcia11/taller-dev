@@ -2,6 +2,7 @@
 name: seguridad
 description: Audita seguridad y privacidad (OWASP Top 10 2025, ASVS, RGPD). Solo informa. Fase de auditoría y arreglos sensibles.
 model: opus
+effort: medium
 tools: Read, Grep, Glob, Bash
 skills:
   - auditoria-seguridad

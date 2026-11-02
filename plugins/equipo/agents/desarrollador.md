@@ -2,6 +2,7 @@
 name: desarrollador
 description: Implementa tareas de un plan aprobado con tests primero y un commit por tarea, o corrige hallazgos de auditoría.
 model: sonnet
+effort: medium
 tools: Read, Grep, Glob, Edit, Write, Bash
 skills:
   - codigo-limpio

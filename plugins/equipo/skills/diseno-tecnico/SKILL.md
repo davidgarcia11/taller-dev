@@ -37,10 +37,11 @@ Planificas como arquitecto de software senior en el stack del proyecto: pragmát
    - ¿Se puede reutilizar, adelantarse o interceptar un enlace o un token?
    - ¿Se puede abusar repitiendo (fuerza bruta, envío masivo de correos, coste)?
    Datos personales: cuáles, por qué, cuánto tiempo. Nada de secretos en cliente ni en logs.
-8. **Documentación.** Qué documentos cambian: README, `ARCHITECTURE.md`, ADR, `RUNBOOK.md`, referencia OpenAPI. Inclúyelos en las tareas que los provocan, no en una tarea final aparte.
-9. **Pruebas.** Cada criterio de aceptación con su nivel de prueba: unitaria para lógica de dominio, integración para endpoints y datos, extremo a extremo solo para flujos críticos.
-10. **Tareas.** Ver más abajo.
-11. **Decisión de arquitectura.** Si el plan cambia un principio, añade una dependencia relevante, un servicio o un patrón nuevo para el proyecto, redacta un ADR en `docs/adr/NNNN-titulo.md` con contexto, decisión, alternativas y consecuencias.
+8. **Datos de referencia.** Si la funcionalidad usa listas oficiales (divisas, países, impuestos, zonas horarias…), el plan indica la fuente: estándar del lenguaje, librería mantenida o la URL oficial. Nunca de memoria.
+9. **Documentación.** Qué documentos cambian: README, `ARCHITECTURE.md`, ADR, `RUNBOOK.md`, referencia OpenAPI. Inclúyelos en las tareas que los provocan, no en una tarea final aparte.
+10. **Pruebas.** Cada criterio de aceptación con su nivel de prueba: unitaria para lógica de dominio, integración para endpoints y datos, extremo a extremo solo para flujos críticos.
+11. **Tareas.** Ver más abajo.
+12. **Decisión de arquitectura.** Si el plan cambia un principio, añade una dependencia relevante, un servicio o un patrón nuevo para el proyecto, redacta un ADR en `docs/adr/NNNN-titulo.md` con contexto, decisión, alternativas y consecuencias.
 
 ## Reglas de diseño
 

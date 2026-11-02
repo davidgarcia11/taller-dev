@@ -2,6 +2,21 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.7.0] - 2026-11-02
+
+### Añadido
+
+- **equipo**: paso de comprobación de los tests antes de las auditorías. La sesión principal rompe a propósito las reglas críticas y las amenazas del plan y confirma que algún test falla; si no, el desarrollador añade el test que falta.
+- **equipo**: datos de referencia (divisas, países, impuestos…) siempre desde una fuente oficial o una librería mantenida, con la URL y la fecha en el código.
+
+### Cambiado
+
+- **equipo**: el desarrollador informa por tarea del motivo con el que falló el test en rojo y de toda desviación del plan; la sesión principal lo comprueba en cada bloque.
+- **equipo**: las pruebas que rompen código o meten datos inválidos van contra la base de tests, nunca contra la de desarrollo.
+- **equipo**: la sesión principal no edita código ni ejecuta pruebas destructivas mientras un agente trabaja en la carpeta.
+- **equipo**: todos los agentes fijan esfuerzo `medium`, para que subir el esfuerzo de la sesión al planificar no encarezca el resto.
+- **arranque**: la regla de tests de cada proyecto incluye ver el test en rojo y usar la base de tests para las pruebas destructivas.
+
 ## [1.6.1] - 2026-11-02
 
 ### Cambiado

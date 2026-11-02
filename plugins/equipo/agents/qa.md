@@ -2,6 +2,7 @@
 name: qa
 description: Comprueba con ejecuciones reales estabilidad, criterios de aceptación, cobertura y regresiones. Solo informa. Fase de auditoría.
 model: sonnet
+effort: medium
 tools: Read, Grep, Glob, Bash
 skills:
   - control-calidad

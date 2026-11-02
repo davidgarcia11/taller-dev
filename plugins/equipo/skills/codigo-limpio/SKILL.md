@@ -14,7 +14,7 @@ user-invocable: false
 
 ## Ciclo por tarea
 
-1. **Rojo.** Escribe el test que demuestra la tarea. Ejecútalo y comprueba que falla por el motivo esperado, no por un error de compilación o de importación.
+1. **Rojo.** Escribe el test que demuestra la tarea, y los de sus casos límite y amenazas. Ejecútalos antes de implementar y comprueba que fallan por el motivo esperado, no por un error de compilación o de importación. Anota el motivo del fallo: lo pide tu mensaje final. Si escribiste código antes que su test, dilo; no lo ocultes.
 2. **Verde.** Implementa lo mínimo para que pase.
 3. **Refactor.** Mejora nombres, elimina duplicación y simplifica con los tests en verde.
 4. **Check.** `mise run check` en verde.
@@ -47,6 +47,10 @@ user-invocable: false
 - Operaciones que modifican varios datos: en una transacción, o idempotentes si no es posible.
 - Nada de secretos ni datos personales en código, logs o mensajes de error.
 
+## Datos de referencia
+
+Divisas, países, idiomas, zonas horarias, impuestos, códigos bancarios o cualquier lista oficial: nunca de memoria. Usa la fuente que indique el plan, una librería mantenida o el estándar del lenguaje (`Intl`, `zoneinfo`…). Si la escribes en el código, deja en un comentario la URL de la fuente y su fecha de publicación. Si no puedes consultarla, dilo en tu mensaje final como desviación.
+
 ## Tests
 
 - Prueban comportamiento observable, no detalles de implementación.
@@ -55,6 +59,7 @@ user-invocable: false
 - Deterministas: reloj, aleatoriedad, red y servicios externos inyectados o simulados en los unitarios. Sin `sleep`.
 - Incluye los casos límite y de error del plan, no solo el camino feliz.
 - Datos de prueba con factorías o constructores, sin datos personales reales.
+- Contra la base de datos de tests, nunca contra la de desarrollo. Lo mismo para cualquier prueba que meta datos inválidos o rompa código a propósito.
 
 ## Interfaz (si aplica)
 
@@ -70,4 +75,8 @@ user-invocable: false
 
 ## Salida
 
-Mensaje final con: tareas completadas y sus commits, desviaciones del plan y su motivo, y cualquier riesgo detectado.
+Mensaje final con:
+
+- Por tarea: commit, test que la demuestra y motivo con el que falló en rojo (o «sin rojo» y por qué).
+- Desviaciones del plan y su motivo: configuración, dependencias, datos de referencia, cualquier cosa que el plan no preveía.
+- Riesgos detectados.

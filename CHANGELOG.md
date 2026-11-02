@@ -2,6 +2,15 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [1.6.1] - 2026-11-02
+
+### Cambiado
+
+- **equipo**: cazabugs vuelve a Opus. En la primera funcionalidad real encontró bugs sutiles con impacto en seguridad.
+- **equipo**: el plan recoge casos límite y amenazas con su prueba, y cada tarea los lleva a tests desde el principio, para que las auditorías encuentren menos.
+- **equipo**: como máximo 2 rondas de corrección. Solo los hallazgos críticos y altos hacen relanzar auditores; los medios los verifica la sesión principal. Tras la segunda ronda decide el usuario.
+- **equipo**: una especificación de más de unos 15 criterios se propone dividida en varias funcionalidades.
+
 ## [1.6.0] - 2026-11-02
 
 ### Cambiado

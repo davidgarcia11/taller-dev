@@ -1,7 +1,7 @@
 ---
 name: cazabugs
 description: Busca bugs reales con casos límite, estados, concurrencia y errores, y los entrega con un test que los reproduce. Solo informa.
-model: sonnet
+model: opus
 tools: Read, Grep, Glob, Bash
 skills:
   - caza-de-bugs

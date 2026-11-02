@@ -29,13 +29,17 @@
 
 ## Errores y casos límite
 
-| Situación | Comportamiento |
-|---|---|
-| | |
+| Situación | Comportamiento | Prueba |
+|---|---|---|
+| | | |
 
 ## Seguridad y privacidad
 
 <!-- Quién puede hacer qué, validación de entradas, datos personales, secretos. -->
+
+| Amenaza | Mitigación | Prueba |
+|---|---|---|
+| | | |
 
 ## Documentación que cambia
 

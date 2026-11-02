@@ -6,7 +6,7 @@
 
 Tres plugins de Claude Code: uno arranca o adapta proyectos con el estándar, otro especifica, planifica, desarrolla y audita cada cambio antes de que llegue a tu revisión, y un panel te enseña en todo momento qué hace cada agente y cuánto te queda de tu plan.
 
-![Versión](https://img.shields.io/badge/versión-1.6.0-2563eb?style=flat-square)
+![Versión](https://img.shields.io/badge/versión-1.6.1-2563eb?style=flat-square)
 ![Claude Code](https://img.shields.io/badge/Claude_Code-plugins-d97757?style=flat-square)
 ![Metodología](https://img.shields.io/badge/SDD_·_TDD-especificación_primero-16a34a?style=flat-square)
 ![Forjas](https://img.shields.io/badge/GitHub_·_GitLab-soportados-6b7280?style=flat-square)
@@ -77,12 +77,12 @@ flowchart TD
         direction LR
         G1[Revisor<br/><sub>Sonnet · siempre</sub>]
         G2[QA<br/><sub>Sonnet · siempre</sub>]
-        G3[Cazabugs<br/><sub>Sonnet · si hay lógica delicada</sub>]
+        G3[Cazabugs<br/><sub>Opus · si hay lógica delicada</sub>]
         G4[Seguridad<br/><sub>Opus · si toca datos o accesos</sub>]
     end
 
     G --> H{¿Hallazgos<br/>bloqueantes?}
-    H -->|sí, máx. 3 rondas| I[🔧 Correcciones con test]
+    H -->|sí, máx. 2 rondas| I[🔧 Correcciones con test]
     I --> G
     H -->|no| J[📚 Documentación y CLAUDE.md]
     J --> K[📬 PR abierta]
@@ -182,10 +182,10 @@ La primera petición arranca `/equipo:funcionalidad` y la segunda `/equipo:arreg
 | ⌨️ **desarrollador** | Sonnet | Implementa con tests primero, un commit por tarea, y corrige los hallazgos | ✅ |
 | 🔎 **revisor** | Sonnet | Código limpio, duplicación, simplicidad, tests y cumplimiento del plan | ❌ |
 | 🧪 **qa** | Sonnet | Check completo, matriz de criterios, cobertura de lo cambiado, tests intermitentes, build y migraciones | ❌ |
-| 🐛 **cazabugs** | Sonnet | Límites, entradas inválidas, estados, concurrencia y fallos externos; cada bug con su test | ❌ |
+| 🐛 **cazabugs** | Opus | Límites, entradas inválidas, estados, concurrencia y fallos externos; cada bug con su test | ❌ |
 | 🛡️ **seguridad** | Opus | OWASP Top 10 2025, ASVS, secretos, dependencias y RGPD | ❌ |
 
-**Por qué estos modelos.** Opus donde un fallo de criterio sale caro: diseñar la funcionalidad y pensar como un atacante. Sonnet donde el método está escrito en su skill: implementar, revisar el código, buscar bugs con casos límite y ejecutar comprobaciones.
+**Por qué estos modelos.** Opus donde un fallo de criterio sale caro: diseñar la funcionalidad, imaginar cómo se rompe y pensar como un atacante. Sonnet donde el método está escrito en su skill: implementar, revisar el código y ejecutar comprobaciones.
 
 **Qué auditores entran.** QA y revisor, siempre. Seguridad, si el cambio toca accesos, datos personales, pagos, secretos, dependencias o entradas de usuario. Cazabugs, si hay estados, cálculos, concurrencia, integraciones o migraciones. Antes de lanzarlos te dice cuáles van y por qué, y puedes pedir los que falten. Así una pantalla sencilla no gasta lo mismo que un pago.
 

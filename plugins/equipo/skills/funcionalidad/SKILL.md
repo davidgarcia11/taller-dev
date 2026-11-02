@@ -59,7 +59,8 @@ git branch -a --list '*feat/[0-9][0-9][0-9]-*'
 1. Lee `CLAUDE.md`, los principios de `docs/ARCHITECTURE.md` y el código relacionado lo justo para preguntar bien.
 2. Pregunta con AskUserQuestion solo lo que no puedas deducir, en rondas de hasta 4 preguntas.
 3. Redacta `docs/specs/NNN-nombre-corto/spec.md` desde `${CLAUDE_PLUGIN_ROOT}/plantillas/spec.md`. Comportamiento observable, nunca implementación. Cada criterio verificable.
-4. Enseña en el chat el objetivo, las historias, los criterios y lo que queda fuera. Itera hasta la aprobación explícita y marca `Estado: Aprobada`.
+4. **Tamaño.** Si pasa de unos 15 criterios de aceptación, propón dividirla en funcionalidades que se puedan probar de punta a punta por separado, con su orden, y especifica solo la primera. Cada auditoría y cada ronda cuestan en proporción al tamaño.
+5. Enseña en el chat el objetivo, las historias, los criterios y lo que queda fuera. Itera hasta la aprobación explícita y marca `Estado: Aprobada`.
 
 ## 3. Plan
 
@@ -107,9 +108,14 @@ Consolida los informes: une duplicados, conserva el texto completo de cada halla
 - MEDIO: se corrigen salvo que sean muchos o costosos; en ese caso pregunta al usuario cuáles aplazar.
 - BAJO: van a la PR como pendientes.
 
-Lanza `equipo:desarrollador` con los hallazgos a corregir, completos. Después relanza solo los auditores que tenían hallazgos bloqueantes, indicándoles cuáles deben verificar. Si el desarrollador discute un hallazgo, decide tú cuando sea evidente y pregunta al usuario cuando no.
+Lanza `equipo:desarrollador` con todos los hallazgos a corregir (bloqueantes y MEDIO) en un solo encargo, completos. Si el desarrollador discute un hallazgo, decide tú cuando sea evidente y pregunta al usuario cuando no.
 
-Máximo 3 rondas. Si sigue habiendo bloqueantes, para y presenta la situación al usuario.
+Verificación:
+
+- Solo los CRÍTICO y ALTO hacen relanzar auditores: relanza solo los que los encontraron, indicándoles qué hallazgos deben verificar y que no repitan la auditoría entera.
+- Los MEDIO los verificas tú: el test nuevo existe, falla sin la corrección y `mise run check` está en verde.
+
+Máximo 2 rondas de corrección. Si tras la segunda queda algún CRÍTICO o ALTO, para y presenta al usuario cada hallazgo con su coste estimado para que decida qué se corrige ya y qué va a pendientes.
 
 ## 7. Documentación y CLAUDE.md
 

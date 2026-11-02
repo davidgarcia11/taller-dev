@@ -1,6 +1,6 @@
 {
   "name": "equipo",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Equipo de desarrollo por funcionalidad: especificación, plan, desarrollo con tests y auditorías de calidad, estabilidad, bugs y seguridad.",
   "author": {
     "name": "David Garcia"

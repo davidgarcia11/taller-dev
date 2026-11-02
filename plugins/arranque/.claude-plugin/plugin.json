@@ -1,6 +1,6 @@
 {
   "name": "arranque",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Crea proyectos nuevos o adapta los existentes al estándar: plan aprobado, herramientas por proyecto, git, CI y protecciones.",
   "author": {
     "name": "David Garcia"

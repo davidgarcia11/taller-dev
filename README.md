@@ -103,7 +103,7 @@ Para cambios pequeños hay un **modo ligero**: especificación breve, una sola a
 Cada funcionalidad deja su rastro en el repositorio, como documentación normal del proyecto:
 
 ```text
-docs/specs/007-firma-de-partes/
+docs/specs/007-recordatorios-por-email/
 ├── spec.md    Qué y por qué: historias de usuario y criterios de aceptación verificables
 ├── plan.md    Cómo: código que se reutiliza, datos, contratos, errores, seguridad y pruebas
 └── tasks.md   Tareas ordenadas; cada una es un commit con su test
@@ -137,7 +137,7 @@ El plugin `equipo` no se instala a mano: `nuevo-proyecto` y `adaptar-proyecto` l
 ### Crear un proyecto
 
 ```text
-Quiero crear una app para gestionar los partes de obra desde el móvil
+Quiero crear una app para gestionar las reservas de un gimnasio desde el móvil
 ```
 
 O directamente `/arranque:nuevo-proyecto`. Te preguntará lo necesario y te presentará un plan razonado:
@@ -159,7 +159,7 @@ Cuando lo apruebes, creará el proyecto, el repositorio privado y lo dejará lis
 ### Adaptar un proyecto existente
 
 ```text
-/arranque:adaptar-proyecto ~/Projects/erp-encofrados
+/arranque:adaptar-proyecto ~/Projects/mi-proyecto
 ```
 
 Hace un diagnóstico de solo lectura (stack, hooks, CI, secretos en el historial, dependencias vulnerables, archivos del asistente rastreados), te propone los cambios y, con tu aprobación, los aplica en la rama `chore/adaptar-estandar` con su PR.
@@ -167,11 +167,11 @@ Hace un diagnóstico de solo lectura (stack, hooks, CI, secretos en el historial
 ### Trabajar en un proyecto
 
 ```text
-Añade la firma de partes desde el móvil con el DNI del trabajador
+Añade recordatorios por email 24 horas antes de cada reserva
 ```
 
 ```text
-Al exportar el parte en PDF salen mal las horas extra de los sábados
+Al exportar las reservas en PDF salen mal las de los sábados
 ```
 
 La primera petición arranca `/equipo:funcionalidad` y la segunda `/equipo:arreglo`. Al final tienes una PR con la especificación enlazada, todos los checks en verde y el resumen de cada auditoría.
@@ -213,7 +213,7 @@ Cada agente carga al empezar su skill de conocimiento (`codigo-limpio`, `revisio
 Un mod de Claude Code que dibuja dos cosas: una franja fija sobre el cuadro de texto y un panel completo que abres con `/panel` o con su botón.
 
 ```text
-5 h 52 % (2 h 10 min) · semana 21 % · sesión 10,80 $ · ● desarrollador: edita partes.ts   [ Panel ]
+5 h 52 % (2 h 10 min) · semana 21 % · sesión 10,80 $ · ● desarrollador: edita recordatorios.ts   [ Panel ]
 ```
 
 ```text
@@ -222,7 +222,7 @@ TU PLAN
 Semana  ███░░░░░░░░░░░░░░  21 %  se renueva en 1 d 20 h
 
 AHORA
-● desarrollador  Sonnet · edita partes.ts
+● desarrollador  Sonnet · edita recordatorios.ts
 ● qa             Sonnet · ejecuta mise run check
 ✓ seguridad      Opus · terminado
 
@@ -235,7 +235,7 @@ Total                        4,98 M  131,4 k   10,80 $
 Este mes en Claude Code: 143,20 $ · mes anterior: 98,10 $
 
 RESUMEN                [ Redactar con Haiku ]
-12:03  Tú: añade la firma de partes desde el móvil
+12:03  Tú: añade recordatorios por email
 12:20  Lanza desarrollador: Implementa T1-T3
 12:41  seguridad termina (4 min) · CAMBIOS NECESARIOS
 12:58  PR abierta: https://github.com/…/pull/14
